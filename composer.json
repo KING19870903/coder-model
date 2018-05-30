@@ -1,0 +1,29 @@
+{
+    "name": "baidu-appsearch/xexplorer-server",
+    "type": "library",
+    "description": "区块链浏览器服务端相关代码逻辑",
+    "require": {
+        "psr/log": "^1.0.2"
+    },
+    "authors": [
+        {
+            "name": "zhuminghai",
+            "email": "zhuminghai@baidu.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Baidu\\Appsearch\\Xexplorer_Server\\": "src/" }   
+    },
+    "config": {
+        "secure-http": false
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://composer.baidu.com"
+        },
+        {
+            "packagist": false
+        }
+    ]
+}
