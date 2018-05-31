@@ -9,12 +9,19 @@
 class Bootstrap extends Ap_Bootstrap_Abstract{
 	public function _initRoute(Ap_Dispatcher $dispatcher) {
 		//在这里注册自己的路由协议,默认使用static路由
+        $router = Ap_Dispatcher::getInstance()->getRouter();
+        $route  = new Utils_Route();
+        $router->addRoute('xexplorerRoute', $route);
 	}
 	
 	public function _initPlugin(Ap_Dispatcher $dispatcher) {
         //注册saf插件
         $objPlugin = new Saf_ApUserPlugin();
         $dispatcher->registerPlugin($objPlugin);
+
+        // 请求参数处理
+        $objProcessParams = new Plugin_ProcessParams();
+        $dispatcher->registerPlugin($objProcessParams);
     }
 	
 	public function _initView(Ap_Dispatcher $dispatcher){
