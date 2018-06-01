@@ -93,7 +93,7 @@ class Base_Page extends As_Base_Page {
     protected function checkLogin() {
 
         if(empty($_COOKIE['BDUSS'])) {
-            $this->useInfo = NULL;
+            $this->useInfo = null;
         }
         $ret = Bd_Passport::checkUserLogin();
         if($ret) {
