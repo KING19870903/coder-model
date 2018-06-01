@@ -8,6 +8,15 @@
 
 class Base_Page extends As_Base_Page {
 
+    /**
+     * 可使用的pass用户信息
+     * @var array
+     */
+    protected static $ALLOW_USER_FIELDS = array(
+        'uid',
+        'displayname',
+    );
+
     protected $useInfo;
 
     public function __construct() {
@@ -55,7 +64,11 @@ class Base_Page extends As_Base_Page {
 
         $this->arrInput = Utils_Params::getAllParams();
 
+        // 参数预处理
         parent::init();
+
+        // 初始化用户信息
+        $this->checkLogin();
     }
 
     /**
@@ -77,8 +90,36 @@ class Base_Page extends As_Base_Page {
     /**
      * 登录状态判断
      */
-    public function checkLogin() {
+    protected function checkLogin() {
 
-        // 待补充完善
+        if(empty($_COOKIE['BDUSS'])) {
+            $this->useInfo = NULL;
+        }
+        $ret = Bd_Passport::checkUserLogin();
+        if($ret) {
+            $this->getAllowUserInfo($ret);
+        }
+    }
+
+    /**
+     * 获取可用的用户信息
+     * @param array $oriPassUserInfo
+     * @return bool
+     */
+    private function getAllowUserInfo(array $oriPassUserInfo) {
+
+        // 获取可用用户信息
+        foreach (self::$ALLOW_USER_FIELDS as $key) {
+            $this->useInfo[$key] = $oriPassUserInfo[$key];
+        }
+
+        // 判断是否已登录
+        $this->useInfo['isLogin'] = false;
+        if(!empty($oriPassUserInfo['uid'])) {
+
+            $this->useInfo['isLogin'] = true;
+
+        }
+        return true;
     }
 }

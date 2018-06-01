@@ -8,13 +8,20 @@
 
 class Service_Page_View_Home extends Base_Page {
 
+    private $dataObj;
+
     public function __construct() {
 
         parent::__construct();
+
+        $this->dataObj = new Service_Data_Home();
+
     }
 
     public function call() {
-        $ret = array('data' => '1111111111111');
-        $this->arrOutput = Utils_Output::SuccessArray($ret);
+
+        $result = $this->dataObj->getHomeInfo($this->arrInput);
+
+        $this->arrOutput = Utils_Output::SuccessArray($result);
     }
 }
