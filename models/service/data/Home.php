@@ -7,12 +7,17 @@
  */
 class Service_Data_Home {
 
+    private $arrInput;
+
     /**
      * 获取区块链home数据
      * @param array $arrInput
      * @return mixed
      */
     public function getHomeInfo(array $arrInput) {
+
+        // 输入数据初始化
+        $this->arrInput = $arrInput;
 
         $result = $data = array();
 
@@ -68,9 +73,9 @@ class Service_Data_Home {
             $itemData = array();
             $itemData = $this->getOutputItemData($info);
             $itemData['fParam'] = Const_FParam::getFparam(Const_FParam::F_HOME_BANNER);
-            $retBanner[] = $itemData;
+            $retBanner = $itemData;
         }
-        $banner = Const_DataType::getDataTypeAppInfoCard(
+        $banner = Const_DataType::getDataTypeCard(
             Const_DataType::DATATYPE_HOME_BANNER,
             $retBanner
         );
@@ -101,7 +106,7 @@ class Service_Data_Home {
             $retRecDapp[] = $itemData;
         }
         $recDapp = Const_DataType::getDataTypeAppInfoCard(
-            Const_DataType::DATATYPE_HOEM_RECOMMEND_DAPP,
+            Const_DataType::DATATYPE_MY_DAPP,
             $retRecDapp
         );
         $data[] = $recDapp;
@@ -122,8 +127,15 @@ class Service_Data_Home {
 
         $itemData = array();
         $itemData['name'] = $info['name'];
-        $itemData['icon2x'] = $info['icon'];
-        $itemData['icon3x'] = !empty($info['highticon']) ? $info['highticon'] : "";
+
+        // 区分android和ios图片输出
+        if($this->arrInput['platform_type'] == 'android') {
+            $itemData['icon'] = $info['highticon'];
+        }else {
+            $itemData['icon2x'] = $info['icon'];
+            $itemData['icon3x'] = !empty($info['highticon']) ? $info['highticon'] : "";
+        }
+
         $itemData['jumpUrl'] = $info['url'];
         $itemData['jumpType'] = $info['urltype'];
 

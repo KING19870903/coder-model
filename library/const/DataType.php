@@ -52,7 +52,7 @@ class Const_DataType {
     }
 
     /**
-     * 获取卡片类型对应卡片数据
+     * 获取多个卡片对应卡片数据
      * @param $dataType
      * @param array $itemData
      * @return array
@@ -64,6 +64,24 @@ class Const_DataType {
         $dataCard['dataType'] = $dataType;
 
         $dataCard['itemData']['appInfos'] = $itemData;
+
+        return $dataCard;
+
+    }
+
+    /**
+     * 获取普通卡片信息
+     * @param $dataType
+     * @param array $itemData
+     * @return array
+     */
+    public static function getDataTypeCard($dataType, array $itemData) {
+
+        $dataCard = array();
+
+        $dataCard['dataType'] = $dataType;
+
+        $dataCard['itemData'] = $itemData;
 
         return $dataCard;
 
