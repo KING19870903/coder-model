@@ -100,7 +100,7 @@ class Utils_Params {
      * @static
      * @access protected
      */
-    protected static function filterHtmlChars() {
+    protected static function filterHtmlCharsfilterHtmlChars() {
         $arrSpecialKeys
             = array('from', 'cid', 'f', 'uid', 'baiduid', 'ssid', 'bd_page_type', 'assets_debug', 'action', 'tj');
 
@@ -142,17 +142,10 @@ class Utils_Params {
             }
         }
 
-        if (!empty($arrPuParams)) {
-            /**
-             * at,gt参数无用，日志改造时请去掉
-             */
-            $arrPuParams['at'] = 1;
-            $arrPuParams['gt'] = '111111_0_0';
-            self::$arrParsedParams['params'] = array_merge(
-                self::$arrParsedParams['params'],
-                $arrPuParams
-            );
-        }
+        self::$arrParsedParams['params'] = array_merge(
+            self::$arrParsedParams['params'],
+            $arrPuParams
+        );
     }
 
     /**

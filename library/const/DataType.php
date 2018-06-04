@@ -63,7 +63,7 @@ class Const_DataType {
 
         $dataCard['dataType'] = $dataType;
 
-        $dataCard['itemData']['appInfo'] = $itemData;
+        $dataCard['itemData']['appInfos'] = $itemData;
 
         return $dataCard;
 
