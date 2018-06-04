@@ -60,6 +60,16 @@ class Utils_Params {
     }
 
     /**
+     * 获取原始的所有请求参数，不区分GET/POST请求类型
+     * @return array
+     */
+    public static function getAllOriParams(){
+        $getParams  = !empty($_GET)  ? $_GET : array();
+        $postParams = !empty($_POST) ? $_POST : array();
+        return array_merge($getParams, $postParams);
+    }
+
+    /**
      * 处理HTTP GET请求参数
      *
      * @static

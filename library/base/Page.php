@@ -12,9 +12,20 @@ class Base_Page extends As_Base_Page {
      * 可使用的pass用户信息
      * @var array
      */
-    protected static $ALLOW_USER_FIELDS = array(
+    public static $ALLOW_USER_FIELDS = array(
         'uid',
         'displayname',
+    );
+
+    /**
+     * 不参与客户端参数签名校验
+     * @var array
+     */
+    public static $SIGN_FILTERS_ARR = array(
+        'pu',
+        'cct',
+        'network',
+        'ver'
     );
 
     protected $useInfo;
@@ -24,7 +35,7 @@ class Base_Page extends As_Base_Page {
         parent::__construct();
 
         // 是否开启sha1签名校验
-        $this->isSignCheckOpen = false;
+        $this->isSignCheckOpen = true;
 
         // 参数校验规则
         $this->arrValidate = array(
@@ -76,14 +87,22 @@ class Base_Page extends As_Base_Page {
      */
     protected function checkParam() {
 
+        // 校验签名的参数（非解析之后的参数）
+        $checkInputParams = Utils_Params::getAllOriParams();
+
         //校验参数有效性
         if (!empty($this->arrValidate)) {
-            As_Request_Validate::validate($this->arrValidate, $this->arrInput);
+            As_Request_Validate::validate($this->arrValidate, $checkInputParams);
         }
 
         //参数签名及token校验
         if ($this->isSignCheckOpen) {
-            As_Request_Sign::checkSha1Sign($this->arrInput, Const_Common::SIGN_TOKEN);
+
+            As_Request_Sign::checkSha1Sign(
+                $checkInputParams,
+                Const_Common::SIGN_TOKEN,
+                self::$SIGN_FILTERS_ARR
+            );
         }
     }
 

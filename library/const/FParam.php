@@ -25,7 +25,7 @@ class Const_FParam {
 
         self::F_HOME_BANNER => 'explorer_home@banner',
 
-        self::F_HOME_RECOMMEND_DAPP => 'explorer_home@pos+%d',
+        self::F_HOME_RECOMMEND_DAPP => 'explorer_home@recdapp@pos+%d',
     );
 
     /**
