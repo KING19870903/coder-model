@@ -56,7 +56,7 @@ class Utils_Params {
      * @return array
      */
     public static function getAllParams() {
-        return array_merge(self::$arrParsedParams['params'], self::$arrParsedParams['services']);
+        return array_merge((array) self::$arrParsedParams['params'], (array) self::$arrParsedParams['services']);
     }
 
     /**
@@ -79,7 +79,7 @@ class Utils_Params {
         self::$arrParsedParams['params'] = $_GET;
 
         // 特殊字符处理
-       // self::filterHtmlChars();
+        self::filterHtmlChars();
 
         // pu参数
         self::parsePu();

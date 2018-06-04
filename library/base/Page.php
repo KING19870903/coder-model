@@ -22,6 +22,7 @@ class Base_Page extends As_Base_Page {
      * @var array
      */
     public static $SIGN_FILTERS_ARR = array(
+        'action',
         'pu',
         'cct',
         'network',
