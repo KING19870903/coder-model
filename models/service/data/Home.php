@@ -116,10 +116,9 @@ class Service_Data_Home {
     /**
      * 获取输出的item数据
      * @param array $info
-     * @param $jumpType
      * @return array
      */
-    private function getOutputItemData(array $info, $jumpType) {
+    private function getOutputItemData(array $info) {
 
         $itemData = array();
         $itemData['name'] = $info['name'];

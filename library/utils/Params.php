@@ -79,7 +79,7 @@ class Utils_Params {
         self::$arrParsedParams['params'] = $_GET;
 
         // 特殊字符处理
-        self::filterHtmlChars();
+       // self::filterHtmlChars();
 
         // pu参数
         self::parsePu();
@@ -100,7 +100,7 @@ class Utils_Params {
      * @static
      * @access protected
      */
-    protected static function filterHtmlCharsfilterHtmlChars() {
+    protected static function filterHtmlChars() {
         $arrSpecialKeys
             = array('from', 'cid', 'f', 'uid', 'baiduid', 'ssid', 'bd_page_type', 'assets_debug', 'action', 'tj');
 
