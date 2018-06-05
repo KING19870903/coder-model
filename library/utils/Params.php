@@ -144,7 +144,7 @@ class Utils_Params {
 
         self::$arrParsedParams['params'] = array_merge(
             self::$arrParsedParams['params'],
-            $arrPuParams
+            (array) $arrPuParams
         );
     }
 

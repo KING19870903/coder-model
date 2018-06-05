@@ -112,10 +112,13 @@ class Base_Page extends As_Base_Page {
      */
     protected function checkLogin() {
 
-        if(empty($_COOKIE['BDUSS'])) {
+        // 判断是否有登录用户信息
+        if(empty($this->arrInput['bduss'])) {
             $this->useInfo = null;
+            return;
         }
-        $ret = Bd_Passport::checkUserLogin();
+
+        $ret = Bd_Passport::checkUserLogin($this->arrInput['bduss'], 1, 1, 0, 1, 1);
         if($ret) {
             $this->getAllowUserInfo($ret);
         }
@@ -130,15 +133,21 @@ class Base_Page extends As_Base_Page {
 
         // 获取可用用户信息
         foreach (self::$ALLOW_USER_FIELDS as $key) {
+            if($key == 'displayname') {
+                $this->useInfo[$key] = iconv(
+                    'gbk',
+                    'utf-8',
+                    $oriPassUserInfo['displayname']
+                );
+                continue;
+            }
             $this->useInfo[$key] = $oriPassUserInfo[$key];
         }
 
         // 判断是否已登录
-        $this->useInfo['isLogin'] = false;
+        $this->useInfo['isLogin'] = 0;
         if(!empty($oriPassUserInfo['uid'])) {
-
-            $this->useInfo['isLogin'] = true;
-
+            $this->useInfo['isLogin'] = 1;
         }
         return true;
     }
