@@ -14,12 +14,7 @@ class Action_Index extends Base_Action {
      * @return array
      */
     public function call() {
-
-
-        $_COOKIE['BDUSS'] = 'ZveXlJajZ0M21VeWVvclZEdGxTZzktRVR0OGY2akdQZHRkRlpPOVBkRGltajFiQVFBQUFBJCQAAAAAAAAAAAEAAADCvAyVemh1bWluZ2hhaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOINFlviDRZbUF';
-        $ret = Bd_Passport::checkUserLogin();
-        var_dump($ret);
-        exit;
+        
         return array();
 
     }
