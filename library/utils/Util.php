@@ -21,24 +21,40 @@ class Utils_Util {
      */
     public static function getDataByVercode($arrResult = array(), $arrParams = array()) {
         $arrRet = array();
+        $curVer = intval($arrParams['ver']);
 
-        $strVer = $arrParams['ver'];
+        //对版本号从小到大排序
+        usort($arrResult, function ($a, $b) {
+            return intval(trim($a['vercode'])) > intval(trim($b['vercode']));
+        });
 
-        foreach ($arrResult as $key => $value) {
-            if ($value['vercode'] == $strVer) {
-                $arrRet['vercode'] = $value['vercode'];
-                $arrRet['vername'] = $value['vername'];
-                $arrRet['text'] = $value['text'];
-                $arrRet['title'] = $value['title'];
-            }
+        //筛选请求参数的版本
+        $arr = array_filter($arrResult, function ($a) use ($curVer) {
+            return intval(trim($a['vercode'])) == intval(trim($curVer));
+        });
+
+        //如果没有在版本列表中匹配到请求参数的版本，则选取比请求版本小的版本中最近的一个版本
+        if (!empty($arr)) {
+            $result = array_values($arr)[0];
+        } else {
+            $arrSmallVer = array_filter($arrResult, function ($a) use ($curVer) {
+                return intval(trim($a['vercode'])) < $curVer;
+            });
+
+            //对版本号从大到小排序
+            usort($arrSmallVer,function ($a,$b){
+                return intval(trim($a['vercode']))<intval(trim($b['vercode']));
+            });
+
+            $result = $arrSmallVer[0];
         }
 
-        //默认取最新版本协议
-        if (empty($arrRet)) {
-            $arrRet['vercode'] = $arrResult[0]['vercode'];
-            $arrRet['vername'] = $arrResult[0]['vername'];
-            $arrRet['text'] = $arrResult[0]['text'];
-            $arrRet['title'] = $arrResult[0]['title'];
+        // 过滤非必需字段
+        if (!empty($result)) {
+            $arrRet['vercode'] = $result['vercode'];
+            $arrRet['vername'] = $result['vername'];
+            $arrRet['text'] = $result['text'];
+            $arrRet['title'] = $result['title'];
         }
 
         return $arrRet;
