@@ -56,7 +56,7 @@ class Utils_Params {
      * @return array
      */
     public static function getAllParams() {
-        return array_merge(self::$arrParsedParams['params'], self::$arrParsedParams['services']);
+        return array_merge((array) self::$arrParsedParams['params'], (array) self::$arrParsedParams['services']);
     }
 
     /**
@@ -142,17 +142,10 @@ class Utils_Params {
             }
         }
 
-        if (!empty($arrPuParams)) {
-            /**
-             * at,gt参数无用，日志改造时请去掉
-             */
-            $arrPuParams['at'] = 1;
-            $arrPuParams['gt'] = '111111_0_0';
-            self::$arrParsedParams['params'] = array_merge(
-                self::$arrParsedParams['params'],
-                $arrPuParams
-            );
-        }
+        self::$arrParsedParams['params'] = array_merge(
+            self::$arrParsedParams['params'],
+            (array) $arrPuParams
+        );
     }
 
     /**

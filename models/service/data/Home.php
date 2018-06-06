@@ -7,6 +7,8 @@
  */
 class Service_Data_Home {
 
+    private $arrInput;
+
     /**
      * 获取区块链home数据
      * @param array $arrInput
@@ -14,8 +16,10 @@ class Service_Data_Home {
      */
     public function getHomeInfo(array $arrInput) {
 
+        // 输入数据初始化
+        $this->arrInput = $arrInput;
+
         $result = $data = array();
-        $homeConfig = Bd_Conf::getAppConf("homeConfig");
 
         // 我的应用卡片
         $textCard = Const_DataType::getDataTypeTextCard(
@@ -24,30 +28,60 @@ class Service_Data_Home {
         );
         $data[] = $textCard;
 
+        // 资管信息获取
+        $resourceIds = array(
+            Const_Anxun::RESOURCE_MYDAPP,
+            Const_Anxun::RESOURCE_BANNER,
+            Const_Anxun::RESOURCE_RECDAPP,
+        );
+        $oamRet = As_Dc_OamApi::getResourceInfo($resourceIds);
+        if (empty($oamRet) || !is_array($oamRet)) {
+            return array();
+        }
+
         // 我的应用
-        foreach($homeConfig['myDapp'] as $pos => &$info) {
+        $retMyDapp = array();
+        $myDappConfig = $oamRet[Const_Anxun::RESOURCE_MYDAPP];
+        if(empty($myDappConfig)) {
+            $myDappConfig = $this->getDefaultConfig(Const_Anxun::RESOURCE_MYDAPP);
+        }
+        foreach($myDappConfig as $pos => $info) {
+            $itemData = array();
+            $itemData = $this->getOutputItemData($info);
             $fParamInputArr = array();
             $fParamInputArr['pos'] = $pos;
-            $info['fParam'] = Const_FParam::getFparam(
+            $itemData['fParam'] = Const_FParam::getFparam(
                 Const_FParam::F_HOME_MYDAPP,
                 $fParamInputArr
             );
+            $retMyDapp[] = $itemData;
         }
         $myDapp = Const_DataType::getDataTypeAppInfoCard(
             Const_DataType::DATATYPE_MY_DAPP,
-            $homeConfig['myDapp']
+            $retMyDapp
         );
         $data[] = $myDapp;
 
+
         // banner数据
-        $homeConfig['banner']['fParam'] = Const_FParam::getFparam(Const_FParam::F_HOME_BANNER);
-        $banner = Const_DataType::getDataTypeAppInfoCard(
+        $retBanner = array();
+        $bannerConfig = $oamRet[Const_Anxun::RESOURCE_BANNER];
+        if(empty($bannerConfig)) {
+            $bannerConfig = $this->getDefaultConfig(Const_Anxun::RESOURCE_BANNER);
+        }
+        foreach ($bannerConfig as $info) {
+            $itemData = array();
+            $itemData = $this->getOutputItemData($info);
+            $itemData['fParam'] = Const_FParam::getFparam(Const_FParam::F_HOME_BANNER);
+            $retBanner = $itemData;
+        }
+        $banner = Const_DataType::getDataTypeCard(
             Const_DataType::DATATYPE_HOME_BANNER,
-            array($homeConfig['banner'])
+            $retBanner
         );
         $data[] = $banner;
 
-        // 我的应用卡片
+        // 推荐应用卡片
         $textCard = Const_DataType::getDataTypeTextCard(
             Const_DataType::DATATYPE_TEXT,
             "推荐应用"
@@ -55,17 +89,25 @@ class Service_Data_Home {
         $data[] = $textCard;
 
         // 推荐应用
-        foreach($homeConfig['recDapp'] as $pos => &$info) {
+        $retRecDapp = array();
+        $recDappConfig = $oamRet[Const_Anxun::RESOURCE_RECDAPP];
+        if(empty($recDappConfig)) {
+            $recDappConfig = $this->getDefaultConfig(Const_Anxun::RESOURCE_RECDAPP);
+        }
+        foreach($recDappConfig as $pos => $info) {
+            $itemData = array();
+            $itemData = $this->getOutputItemData($info);
             $fParamInputArr = array();
             $fParamInputArr['pos'] = $pos;
-            $info['fParam'] = Const_FParam::getFparam(
+            $itemData['fParam'] = Const_FParam::getFparam(
                 Const_FParam::F_HOME_RECOMMEND_DAPP,
                 $fParamInputArr
             );
+            $retRecDapp[] = $itemData;
         }
         $recDapp = Const_DataType::getDataTypeAppInfoCard(
-            Const_DataType::DATATYPE_HOEM_RECOMMEND_DAPP,
-            $homeConfig['recDapp']
+            Const_DataType::DATATYPE_MY_DAPP,
+            $retRecDapp
         );
         $data[] = $recDapp;
 
@@ -75,4 +117,42 @@ class Service_Data_Home {
         return $result;
     }
 
+
+    /**
+     * 获取输出的item数据
+     * @param array $info
+     * @return array
+     */
+    private function getOutputItemData(array $info) {
+
+        $itemData = array();
+        $itemData['name'] = $info['name'];
+
+        // 区分android和ios图片输出
+        if($this->arrInput['platform_type'] == 'android') {
+            $itemData['icon'] = $info['highticon'];
+        }else {
+            $itemData['icon2x'] = $info['icon'];
+            $itemData['icon3x'] = !empty($info['highticon']) ? $info['highticon'] : "";
+        }
+
+        $itemData['jumpUrl'] = $info['url'];
+        $itemData['jumpType'] = $info['urltype'];
+
+        return $itemData;
+    }
+
+    /**
+     * 容错处理，获取默认配置信息
+     * @param $configKey
+     * @return array
+     */
+    private function getDefaultConfig($configKey){
+        $homeConfig = Bd_Conf::getAppConf("homeConfig");
+        if(isset($homeConfig[$configKey])) {
+            return $homeConfig[$configKey];
+        } else {
+            return array();
+        }
+    }
 }

@@ -14,7 +14,7 @@ class Action_Index extends Base_Action {
      * @return array
      */
     public function call() {
-
+        
         return array();
 
     }

@@ -18,7 +18,7 @@ class Const_Common {
     const RESULT_KEY = "result";
 
     // sha1签名校验token
-    const SIGN_TOKEN = "appsearch_explorer_xdaf8dfad*7%&&%&^%&^)dafd";
+    const SIGN_TOKEN = "appsearch_explorer_xdaf8dfad*7%12%fdafasi32fa^%&^)dafd";
 
     //助记词说明
     const HELP_WORDS = 'app/native/helpwords.tpl';
