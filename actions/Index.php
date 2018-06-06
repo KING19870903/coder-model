@@ -6,7 +6,7 @@
  * @since 2018/5/31
  */
 
-class Action_Home extends Base_Action {
+class Action_Index extends Base_Action {
 
     /**
      * action入口处理逻辑

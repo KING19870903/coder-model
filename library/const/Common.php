@@ -20,4 +20,12 @@ class Const_Common {
     // sha1签名校验token
     const SIGN_TOKEN = "appsearch_explorer_xdaf8dfad*7%&&%&^%&^)dafd";
 
+    //助记词说明
+    const HELP_WORDS = 'app/native/helpwords.tpl';
+
+    //用户协议页面
+    const USER_PROTOCOL = 'app/native/userprotocol.tpl';
+
+
+
 }
