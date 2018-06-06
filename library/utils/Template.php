@@ -78,7 +78,7 @@ class Utils_Template  implements Ap_View_Interface {
      * @author zhaoxichao
      * @date 06/06/2018
      */
-    public function assign($name, $value = NULL) {
+    public function assign($name, $value = '') {
         return $this->objSmarty->assign($name, $value);
     }
 
@@ -102,7 +102,7 @@ class Utils_Template  implements Ap_View_Interface {
      * @author zhaoxichao
      * @date 06/06/2018
      */
-    public function render($file, $context = NULL) {
+    public function render($file, $context = '') {
 
     }
 
