@@ -17,4 +17,10 @@ Class Const_Anxun {
     // 资管 - 首页 - 推荐应用
     const RESOURCE_RECDAPP = 'xexplorer_recdapp';
 
+
+    // 资管 - 注册 - 助记词说明
+    const RESOURCE_HELP_WORDS = 'xexplorer_text_notice';
+
+    // 资管 - 注册 - 用户协议
+    const RESOURCE_USER_PROTOCOL = 'xexplorer_user_protocol';
 }

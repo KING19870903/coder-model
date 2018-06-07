@@ -59,8 +59,6 @@ class Base_Page extends As_Base_Page {
 
             'ver' => array('notEmpty'),
 
-            'ver' => array('notEmpty'),
-
             'country' => array('notEmpty'),
 
             'fParam' => array('notEmpty'),
