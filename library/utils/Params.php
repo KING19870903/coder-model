@@ -93,9 +93,7 @@ class Utils_Params {
 
     /**
      * 特殊字符转html
-     *
-     * @static
-     * @access protected
+     * @param $paramKey
      */
     protected static function filterHtmlChars($paramKey) {
         $arrSpecialKeys
@@ -111,9 +109,7 @@ class Utils_Params {
 
     /**
      * pu参数解析
-     *
-     * @static
-     * @access protected
+     * @param $paramKey
      */
     protected static function parsePu($paramKey) {
 
@@ -131,9 +127,7 @@ class Utils_Params {
 
     /**
      * 解析uid
-     *
-     * @static
-     * @access protected
+     * @param $paramKey
      */
     protected static function parseUid($paramKey) {
         $strUid = As_Utils_BdBase64::decodeB64(self::$arrParsedParams[$paramKey]['uid']);
