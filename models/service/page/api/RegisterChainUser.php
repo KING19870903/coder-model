@@ -19,13 +19,15 @@ class Service_Page_Api_RegisterChainUser extends Base_Page {
 
     public function call() {
 
-        $result = array();
+        $result =  array();
 
         // 未登录用户直接抛出异常
         if(!$this->useInfo['uid']) {
-            throw  new Utils_Exception(
-                Const_Error::getCodeMsg(Const_Error::ERROR_USER_NOT_LOGIN),
-                Const_Error::ERROR_USER_NOT_LOGIN);
+            $result['data'] = array(
+                'isUserLogin' => false
+            );
+            $this->arrOutput = Utils_Output::SuccessArray($result);
+            return;
         }
 
         // 注册区块链账户
@@ -34,10 +36,8 @@ class Service_Page_Api_RegisterChainUser extends Base_Page {
             $this->arrInput
         );
 
-        // 返回用户地址和助记词
-        if($retInfo['address'] && $retInfo['mnemonic']) {
-            $result['data'] = $retInfo;
-        }
+        $retInfo['isUserLogin'] = true;
+        $result['data'] = $retInfo;
         $this->arrOutput = Utils_Output::SuccessArray($result);
     }
 }

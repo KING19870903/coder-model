@@ -8,6 +8,9 @@
 
 class Const_Error extends As_Const_Exception{
 
+    // 错误码前缀 --- xexplorer使用该前缀
+    const EXCEPTION_CODE_PREFIX = 200;
+
     // 区块链已存在该账号
     const ERROR_USER_NOT_LOGIN   = 2000;
 
@@ -40,6 +43,17 @@ class Const_Error extends As_Const_Exception{
             return self::$EXCEPTION_MSG[$code];
         }
         return '';
+    }
+
+    /**
+     * 返回统一的错误码
+     * @param $code
+     * @return string
+     */
+    public static function getErrCode($code) {
+
+        return self::EXCEPTION_CODE_PREFIX . $code;
+
     }
 
 }

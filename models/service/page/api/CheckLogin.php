@@ -16,8 +16,6 @@ class Service_Page_Api_CheckLogin extends Base_Page {
 
         parent::__construct();
 
-        $this->isSignCheckOpen = false;
-
         $this->dataObj = new Service_Data_CheckLogin();
 
     }
@@ -26,8 +24,8 @@ class Service_Page_Api_CheckLogin extends Base_Page {
 
         $result = array();
         $data = array(
-            'isUserLogin' => 0,
-            'chainUserExist' => 0,
+            'isUserLogin' => false,
+            'chainUserExist' => false,
         );
 
         // 若用户未登录
@@ -36,13 +34,13 @@ class Service_Page_Api_CheckLogin extends Base_Page {
             $this->arrOutput = Utils_Output::SuccessArray($result);
             return;
         }
-        $data['isUserLogin'] = 1;
+        $data['isUserLogin'] = true;
 
         // 区块链账户是否存在
         $chainUserInfo = $this->dataObj->isChainUserExists($this->useInfo['uid']);
 
         if ($chainUserInfo['has_account']) {
-            $data['chainUserExist'] = 1;
+            $data['chainUserExist'] = true;
             $data['userAddress'] = $chainUserInfo['address'];
         }
         $result['data'] = $data;

@@ -104,11 +104,11 @@ class Dao_BlockChain {
                 self::SERVICE_NAME."_exception",
                 $ralRet['msg']
             );
-            throw  new Utils_Exception(
-                Const_Error::getCodeMsg(Const_Error::ERROR_CHAIN_EXIST_USER),
-                Const_Error::ERROR_CHAIN_EXIST_USER);
+            $result['isHaveRegister'] = true;
+            return $result;
         }
 
+        $ralRet['data']['isHaveRegister'] = false;
         return $ralRet['data'];
     }
 }
