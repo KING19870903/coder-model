@@ -20,7 +20,7 @@ class Action_RegisterChainUser extends Base_Action {
      */
     public function call() {
 
-        $objPageService = new Service_Page_Api_CheckLogin();
+        $objPageService = new Service_Page_Api_RegisterChainUser();
 
         $ret = $objPageService->execute();
 

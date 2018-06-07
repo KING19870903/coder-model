@@ -21,10 +21,11 @@ class Service_Page_Api_RegisterChainUser extends Base_Page {
 
         $result = array();
 
-        // 未登录用户直接返回
+        // 未登录用户直接抛出异常
         if(!$this->useInfo['uid']) {
-            $this->arrOutput = Utils_Output::SuccessArray($result);
-            return;
+            throw  new Utils_Exception(
+                Const_Error::getCodeMsg(Const_Error::ERROR_USER_NOT_LOGIN),
+                Const_Error::ERROR_USER_NOT_LOGIN);
         }
 
         // 注册区块链账户

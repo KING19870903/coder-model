@@ -15,10 +15,10 @@ class Dao_BlockChain {
      */
 
     // 判断是否存在区块链账户
-    const PATH_INFO_CHECK_USER_EXISTS = '/exp/api/add/query';
+    const PATH_INFO_CHECK_USER_EXISTS = '/exp/api/add/query?';
 
     // 为用户创建区块链账户
-    const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create';
+    const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
 
     public function __construct() {
@@ -40,13 +40,14 @@ class Dao_BlockChain {
         $reqParams['uid'] = $uid;
 
         // ral服务请求
+        $queryUrl = self::PATH_INFO_CHECK_USER_EXISTS . http_build_query($reqParams);
         $ralRet = As_Base_RalBase::ralCall(
             self::SERVICE_NAME,
-            self::PATH_INFO_CHECK_USER_EXISTS,
-            'get',
-            $reqParams
+            $queryUrl,
+            'get'
         );
 
+        $ralRet = json_decode($ralRet, true);
         // ral访问异常
         if(!$ralRet) {
             return $result;
@@ -58,6 +59,7 @@ class Dao_BlockChain {
                 self::SERVICE_NAME."_exception",
                 $ralRet['msg']
             );
+            return $result;
         }
 
         return $ralRet['data'];
@@ -69,6 +71,7 @@ class Dao_BlockChain {
      * @param $uid
      * @param array $arrInput
      * @return array
+     * @throws Utils_Exception
      */
     public function registerChainUser($uid, array $arrInput) {
 
@@ -77,19 +80,20 @@ class Dao_BlockChain {
         // 拼装参数
         $reqParams = array();
         $reqParams['uid'] = $uid;
-        $reqParams['strength'] = $arrInput['strength'];
+        $reqParams['strength'] = $arrInput['security_grade'];
         $reqParams['language'] = $arrInput['language'];
         $reqParams['version'] = 1;
 
         // ral服务请求
+        $queryUrl = self::PATH_INFO_REGISTER_CHAIN_USER . http_build_query($reqParams);
         $ralRet = As_Base_RalBase::ralCall(
             self::SERVICE_NAME,
-            self::PATH_INFO_REGISTER_CHAIN_USER,
-            'get',
-            $reqParams
+            $queryUrl,
+            'get'
         );
 
         // ral访问异常
+        $ralRet = json_decode($ralRet, true);
         if(!$ralRet) {
             return $result;
         }
@@ -100,6 +104,9 @@ class Dao_BlockChain {
                 self::SERVICE_NAME."_exception",
                 $ralRet['msg']
             );
+            throw  new Utils_Exception(
+                Const_Error::getCodeMsg(Const_Error::ERROR_CHAIN_EXIST_USER),
+                Const_Error::ERROR_CHAIN_EXIST_USER);
         }
 
         return $ralRet['data'];

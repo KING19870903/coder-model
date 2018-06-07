@@ -78,20 +78,17 @@ class Utils_Params {
     public static function procGetParams() {
         self::$arrParsedParams['params'] = $_GET;
 
+        $paramKey = 'params';
+
         // 特殊字符处理
-        self::filterHtmlChars();
+        self::filterHtmlChars($paramKey);
 
         // pu参数
-        self::parsePu();
+        self::parsePu($paramKey);
 
         // uid
-        self::parseUid();
+        self::parseUid($paramKey);
 
-        // 城市
-        self::parseCct();
-
-        // 省份
-        self::parseProvince();
     }
 
     /**
@@ -100,14 +97,14 @@ class Utils_Params {
      * @static
      * @access protected
      */
-    protected static function filterHtmlChars() {
+    protected static function filterHtmlChars($paramKey) {
         $arrSpecialKeys
             = array('from', 'cid', 'f', 'uid', 'baiduid', 'ssid', 'bd_page_type', 'assets_debug', 'action', 'tj');
 
         foreach ($arrSpecialKeys as $key) {
-            if (!empty(self::$arrParsedParams['params'][$key])) {
-                self::$arrParsedParams['params'][$key]
-                    = htmlspecialchars(self::$arrParsedParams['params'][$key]);
+            if (!empty(self::$arrParsedParams[$paramKey][$key])) {
+                self::$arrParsedParams[$paramKey][$key]
+                    = htmlspecialchars(self::$arrParsedParams[$paramKey][$key]);
             }
         }
     }
@@ -118,32 +115,16 @@ class Utils_Params {
      * @static
      * @access protected
      */
-    protected static function parsePu() {
-        if (empty(self::$arrParsedParams['params']['pu'])) {
+    protected static function parsePu($paramKey) {
+
+        if (empty(self::$arrParsedParams[$paramKey]['pu'])) {
             return;
         }
 
-        $arrPuParams = As_Utils_ACommon::decompose(self::$arrParsedParams['params']["pu"]);
+        $arrPuParams = As_Utils_ACommon::decompose(self::$arrParsedParams[$paramKey]["pu"]);
 
-        // 需要解码的参数名称
-        $arrDecodeKeys = array(
-            'cua',
-            'cuid',
-            'cut',
-        );
-
-        foreach ($arrDecodeKeys as $key) {
-            if (isset($arrPuParams[$key])) {
-                $arrPuParams[$key] = As_Utils_BdBase64::decodeB64($arrPuParams[$key]);
-            }
-
-            if (!empty($arrPuParams[$key])) {
-                $arrPuParams[$key] = urldecode(urldecode($arrPuParams[$key]));
-            }
-        }
-
-        self::$arrParsedParams['params'] = array_merge(
-            self::$arrParsedParams['params'],
+        self::$arrParsedParams[$paramKey] = array_merge(
+            self::$arrParsedParams[$paramKey],
             (array) $arrPuParams
         );
     }
@@ -154,51 +135,14 @@ class Utils_Params {
      * @static
      * @access protected
      */
-    protected static function parseUid() {
-        $strUid = As_Utils_BdBase64::decodeB64(self::$arrParsedParams['params']['uid']);
+    protected static function parseUid($paramKey) {
+        $strUid = As_Utils_BdBase64::decodeB64(self::$arrParsedParams[$paramKey]['uid']);
 
         if (!empty($strUid)) {
-            self::$arrParsedParams['params']['uid'] = $strUid;
+            self::$arrParsedParams[$paramKey]['uid'] = $strUid;
         }
     }
 
-    /**
-     * 解析城市信息
-     *
-     * @static
-     * @access protected
-     */
-    protected static function parseCct() {
-        if (!isset(self::$arrParsedParams['params']['cct'])) {
-            return;
-        }
-
-        self::$arrParsedParams['params']['cct']
-            = As_Utils_BdBase64::decodeB64(self::$arrParsedParams['params']['cct']);
-
-        if (!empty(self::$arrParsedParams['params']['cct'])) {
-            self::$arrParsedParams['params']['cct'] = urldecode(self::$arrParsedParams['params']['cct']);
-        }
-    }
-
-    /**
-     * 解析省份信息
-     *
-     * @static
-     * @access protected
-     */
-    protected static function parseProvince() {
-        if (!isset(self::$arrParsedParams['params']['province'])) {
-            return;
-        }
-
-        self::$arrParsedParams['params']['province']
-            = As_Utils_BdBase64::decodeB64(self::$arrParsedParams['params']['province']);
-
-        if (!empty(self::$arrParsedParams['params']['province'])) {
-            self::$arrParsedParams['params']['province'] = urldecode(self::$arrParsedParams['params']['province']);
-        }
-    }
 
     /**
      * 处理HTTP POST请求参数 (TODO : 编码情况是否需要转换待确认)
@@ -208,5 +152,16 @@ class Utils_Params {
      */
     public static function procPostParams() {
         self::$arrParsedParams['services'] = $_POST;
+
+        $paramKey = 'services';
+
+        // 特殊字符处理
+        self::filterHtmlChars($paramKey);
+
+        // pu参数
+        self::parsePu($paramKey);
+
+        // uid
+        self::parseUid($paramKey);
     }
 }

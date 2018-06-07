@@ -22,9 +22,6 @@ class Plugin_ProcessParams extends Ap_Plugin_Abstract
         if(!empty($ecryptBduss)) {
             $_POST['bduss']  = As_Request_Params::decryptBduss($ecryptBduss);
         }
-//        if($_GET['action'] == 'checklogin') {
-//            $_POST['bduss'] = 'ZveXlJajZ0M21VeWVvclZEdGxTZzktRVR0OGY2akdQZHRkRlpPOVBkRGltajFiQVFBQUFBJCQAAAAAAAAAAAEAAADCvAyVemh1bWluZ2hhaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOINFlviDRZbUF';
-//        }
 
         // 请求参数处理
         Utils_Params::initParams();

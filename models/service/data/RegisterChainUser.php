@@ -24,6 +24,7 @@ class Service_Data_RegisterChainUser {
      * @param $uid
      * @param array $arrInput
      * @return array
+     * @throws Utils_Exception
      */
     public function registerUser($uid, array $arrInput){
 

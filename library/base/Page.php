@@ -98,7 +98,6 @@ class Base_Page extends As_Base_Page {
 
         //参数签名及token校验
         if ($this->isSignCheckOpen) {
-
             As_Request_Sign::checkSha1Sign(
                 $checkInputParams,
                 Const_Common::SIGN_TOKEN,
@@ -119,6 +118,7 @@ class Base_Page extends As_Base_Page {
         }
 
         $ret = Bd_Passport::checkUserLogin($this->arrInput['bduss'], 1, 1, 0, 1, 1);
+
         if($ret) {
             $this->getAllowUserInfo($ret);
         }

@@ -36,10 +36,11 @@ class Service_Page_Api_CheckLogin extends Base_Page {
             $this->arrOutput = Utils_Output::SuccessArray($result);
             return;
         }
-        $result['isUserLogin'] = 1;
+        $data['isUserLogin'] = 1;
 
         // 区块链账户是否存在
         $chainUserInfo = $this->dataObj->isChainUserExists($this->useInfo['uid']);
+
         if ($chainUserInfo['has_account']) {
             $data['chainUserExist'] = 1;
             $data['userAddress'] = $chainUserInfo['address'];
