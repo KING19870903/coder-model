@@ -20,6 +20,9 @@ class Dao_BlockChain {
     // 为用户创建区块链账户
     const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
+    // 查询存储用户交易的区块链信息列表
+    const PATH_INFO_QUERY_MY_ASSET = '/exp/api/wallet/bc/list';
+
 
     public function __construct() {
         // do nothing
@@ -71,7 +74,6 @@ class Dao_BlockChain {
      * @param $uid
      * @param array $arrInput
      * @return array
-     * @throws Utils_Exception
      */
     public function registerChainUser($uid, array $arrInput) {
 
@@ -109,6 +111,48 @@ class Dao_BlockChain {
         }
 
         $ralRet['data']['isHaveRegister'] = false;
+        return $ralRet['data'];
+    }
+
+    /**
+     * 获取我的资产信息
+     * @param $uid
+     * @param $arrInput
+     * @return array
+     */
+    public function getMyAsset($uid, $arrInput) {
+
+        $result = array();
+
+        // 拼装参数
+        $reqParams = array();
+        $reqParams['uid'] = $uid;
+        $reqParams['ps'] = !empty($arrInput['page_size']) ? $arrInput['page_size'] : Const_Common::DEFAULT_PAGE_SIZE ;
+        $reqParams['pn'] = !empty($arrInput['page_num']) ? $arrInput['page_num'] : Const_Common::DEFAULT_PAGE_NUM;
+
+        // ral服务请求
+        $queryUrl = self::PATH_INFO_QUERY_MY_ASSET . http_build_query($reqParams);
+        $ralRet = As_Base_RalBase::ralCall(
+            self::SERVICE_NAME,
+            $queryUrl,
+            'get'
+        );
+
+        // ral访问异常
+        $ralRet = json_decode($ralRet, true);
+        if(!$ralRet) {
+            return $result;
+        }
+
+        // 服务处理错误
+        if($ralRet && $ralRet['code'] != 0) {
+            As_Log_Lib::addNotice(
+                self::SERVICE_NAME."_exception",
+                $ralRet['msg']
+            );
+            return $result;
+        }
+
         return $ralRet['data'];
     }
 }
