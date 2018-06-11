@@ -28,11 +28,16 @@ class Const_Common {
 
 
     /**
+     * 分页和每页大小
+     */
+    const DEFAULT_PAGE_NUM = 1;
+
+    const DEFAULT_PAGE_SIZE = 20;
+
+    /**
      * 用户头像相关
      */
     const USER_ICON_NORMAL = 'https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/';
 
     //const USER_ICON_HIGN   = 'https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portraith/item/';
-
-    const USER_ICON_DEFAULT = 'http://cp01-ocean-400.epc.baidu.com:8082/anxun/pic/item/38dbb6fd5266d01698fae711972bd40735fa3523.jpg';
 }
