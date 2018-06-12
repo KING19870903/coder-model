@@ -26,6 +26,9 @@ class Bootstrap extends Ap_Bootstrap_Abstract{
 	
 	public function _initView(Ap_Dispatcher $dispatcher){
 		//在这里注册自己的view控制器，例如smarty,firekylin
+		$objtemplate = new Utils_Template();    	
+		$objtemplate->setScriptPath('template');
+		$dispatcher->setView($objtemplate);     
 		$dispatcher->disableView();//禁止ap自动渲染模板
 	}
 	
