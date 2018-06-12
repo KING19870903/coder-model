@@ -17,12 +17,6 @@ class Plugin_ProcessParams extends Ap_Plugin_Abstract
      */
     public function routerStartup(Ap_Request_Abstract $request, Ap_Response_Abstract $response) {
 
-        // bduss解密预处理
-        $ecryptBduss = !empty($_POST['bduss']) ? $_POST['bduss'] : $_GET['bduss'];
-        if(!empty($ecryptBduss)) {
-            $_POST['bduss']  = As_Request_Params::decryptBduss($ecryptBduss);
-        }
-
         // 请求参数处理
         Utils_Params::initParams();
     }
