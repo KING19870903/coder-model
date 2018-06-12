@@ -21,7 +21,7 @@ class Dao_BlockChain {
     const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
     // 查询存储用户交易的区块链信息列表
-    const PATH_INFO_QUERY_MY_ASSET = '/exp/api/wallet/bc/list';
+    const PATH_INFO_QUERY_MY_ASSET = '/exp/api/wallet/bc/list?';
 
 
     public function __construct() {

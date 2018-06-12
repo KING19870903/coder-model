@@ -29,8 +29,8 @@ class Service_Page_View_MyAsset extends Base_Page{
             $this->arrOutput = Utils_Output::SuccessArray($result);
             return;
         }
-
         $data['isUserLogin'] = true;
+
         // 获取我的资产信息
         $assetRet = $this->dataObj->getMyAsset($this->useInfo['uid'], $this->arrInput);
         if(!empty($assetRet)) {
