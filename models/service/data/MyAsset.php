@@ -38,6 +38,7 @@ class Service_Data_MyAsset {
     public function getMyAsset($uid, array $arrInput) {
 
         $result = array();
+
         // 获取我的资产信息
         $assetData = $this->daoObj->getMyAsset($uid, $arrInput);
         if(empty($assetData)) {
@@ -53,12 +54,27 @@ class Service_Data_MyAsset {
                     $bcItem[$retKey] = $info[$oriKey];
                 }
             }
+
+            // 添加f参数
+            $fParamInput = array();
+            $fParamInput[] = $info['name'];
+            $bcItem['fParam'] = Const_FParam::getFparam(Const_FParam::F_MYASSET_ITEM, $fParamInput);
+
+            // 拼接端上返回卡片样式
+            $bcItem = Const_DataType::getDataTypeCard(
+                Const_DataType::DATATYPE_MYASSET_ITEM,
+                $bcItem
+            );
+
             $bcList[] = $bcItem;
         }
 
         // 格式化返回的我的资产数据
-        $result['total'] = $assetData['total'];
-        $result['bcList'] = $bcList;
+        $result['hasNextPage'] = false;
+        if($assetData['total'] > $arrInput['page_size'] * $arrInput['page_num']) {
+            $result['hasNextPage'] = true;
+        }
+        $result['data'] = $bcList;
         return $result;
     }
 }

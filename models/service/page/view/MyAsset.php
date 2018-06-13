@@ -20,25 +20,33 @@ class Service_Page_View_MyAsset extends Base_Page{
 
     public function call() {
 
-        $result = $data = array();
+        $result = array();
 
         // 未登录的不做后续处理
-        $data['isUserLogin'] = false;
         if(!$this->useInfo['uid']) {
-            $result['data'] = $data;
-            $this->arrOutput = Utils_Output::SuccessArray($result);
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_LOGIN);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
             return;
         }
 
-        $data['isUserLogin'] = true;
+        // 默认分页大小
+        if(!isset($this->arrInput['page_size'])) {
+            $this->arrInput['page_size'] = Const_Common::DEFAULT_PAGE_SIZE;
+        }
+
+        // 默认访问page_num为1
+        if(!isset($this->arrInput['page_num'])) {
+            $this->arrInput['page_num'] = Const_Common::DEFAULT_PAGE_NUM;
+        }
+
         // 获取我的资产信息
         $assetRet = $this->dataObj->getMyAsset($this->useInfo['uid'], $this->arrInput);
         if(!empty($assetRet)) {
-            $data['asset'] = $assetRet;
+            $result = $assetRet;
         } else {
-            $data['asset'] = array();
+            $result['data'] = array();
         }
-        $result['data'] = $data;
+
         $this->arrOutput = Utils_Output::SuccessArray($result);
 
     }
