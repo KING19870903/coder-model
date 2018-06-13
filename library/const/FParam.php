@@ -18,6 +18,9 @@ class Const_FParam {
     // 首页 --- 推荐应用
     const F_HOME_RECOMMEND_DAPP = 'xexplorer_home_recommend_dapp';
 
+    // 我的资产 --- 某一区块链
+    const F_MYASSET_ITEM = 'xexplorer_myasset_item';
+
 
     public static $fparamMap = array(
 
@@ -26,6 +29,8 @@ class Const_FParam {
         self::F_HOME_BANNER => 'explorer_home@banner',
 
         self::F_HOME_RECOMMEND_DAPP => 'explorer_home@recdapp@pos+%d',
+
+        self::F_MYASSET_ITEM => 'explorer_myasset@name+%s',
     );
 
     /**

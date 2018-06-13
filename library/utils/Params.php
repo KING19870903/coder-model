@@ -153,8 +153,7 @@ class Utils_Params {
 
         // urldecode & decrypt
 
-        $decodeUid = self::$arrParsedParams['services']['uid'];
-        $strUid = Utils_AesCipher::decrypt($decodeUid);
+        $strUid = Utils_AesCipher::decrypt(self::$arrParsedParams['services']['uid']);
 
         if (!empty($strUid)) {
             self::$arrParsedParams['services']['uid'] = $strUid;
@@ -167,8 +166,7 @@ class Utils_Params {
     protected static function parseBduss() {
 
         // urldecode & decrypt
-        $decodeBduss = self::$arrParsedParams['services']['bduss'];
-        $bduss = Utils_AesCipher::decrypt($decodeBduss);
+        $bduss = Utils_AesCipher::decrypt(self::$arrParsedParams['services']['bduss']);
 
         if(!empty($bduss)) {
             self::$arrParsedParams['services']['bduss'] = $bduss;
