@@ -26,7 +26,6 @@ class Const_Common {
     //用户协议页面
     const USER_PROTOCOL = 'app/native/userprotocol.tpl';
 
-
     /**
      * 分页和每页大小
      */

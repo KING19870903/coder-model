@@ -31,8 +31,7 @@ class Service_Page_View_TransactProperty extends Base_Page {
             'bduss' => 's',
             'name' => 's',
             'trans_type' => 'i',
-            'time_start' => 'i',
-            'time_end' => 'i',
+            'trans_time' => 's',
             'ps' => 'i',
             'pn' => 'i',
         );
@@ -87,9 +86,15 @@ class Service_Page_View_TransactProperty extends Base_Page {
      * @date 14/06/2018
      */
     private function handleParams($arrInput = array()) {
+        $strMon = date('Y-m');
+        $strStartMon = empty($arrInput['trans_time']) ? $strMon : trim($arrInput['trans_time']);
+        $strEndMon = date('Y-m', strtotime("$strStartMon +1 month"));
+
+        //产生交易的时间范围--开始时间,默认取当前月份
+        $arrInput['time_start'] = strtotime($strStartMon);
 
         //产生交易的时间范围--结束时间,默认接口访问的当前时间
-        $arrInput['time_end'] = (isset($arrInput['time_end']) && $arrInput['time_end'] > 0)? $arrInput['time_end'] : time();
+        $arrInput['time_end'] = strtotime($strEndMon);
 
         //分页大小，取值范围大于等于1且小于等于50,默认取20
         $arrInput['page_size'] = (isset($arrInput['page_size']) && $arrInput['page_size'] >= 1 && $arrInput['page_size'] <= 50) ? $arrInput['page_size'] : Const_Common::DEFAULT_PAGE_SIZE;

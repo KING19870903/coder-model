@@ -19,7 +19,7 @@ class Const_Error extends As_Const_Exception{
 
     // 查询交易记录失败
     const ERROR_QUERY_USER_CHAIN_LIST = 2003;
-    
+
     // 查询交易起始时间大于交易结束时间
     const ERROR_QUERY_TIME_RANGE = 2005;
 

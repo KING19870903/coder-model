@@ -70,11 +70,9 @@ class Service_Data_TransactProperty {
 
         // 查询交易记录
         $arrRes = $this->objDao->queryTransactPropertyData($uid, $arrInput);
-        if (!$arrRes['total'] || !$arrRes['txlist'] || !is_array($arrRes['txlist'])) {
-            //查询资产交易记录失败
-            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST);
-            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
-            return;
+        if (empty($arrRes['total']) || empty($arrRes['txlist']) ) {
+            //查询资产交易记录为空
+            return $arrResult;
         }
 
         $arrRetList = array();
@@ -88,6 +86,10 @@ class Service_Data_TransactProperty {
             // 格式化下发数据
             foreach (self::$MY_ASSET_TRANSACT_FIELDS as $oriKey => $retKey) {
                 if(isset($value[$oriKey])) {
+                    if ('timestamp' === $oriKey) {
+                        $arrRet[$retKey] = date('m-d H:i', $value[$oriKey]);
+                        continue;
+                    }
                     $arrRet[$retKey] = $value[$oriKey];
                 }
             }
