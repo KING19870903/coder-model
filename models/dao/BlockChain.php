@@ -138,7 +138,7 @@ class Dao_BlockChain {
             // 抛出异常
             $msg = Const_Error::getCodeMsg(Const_Error::ERROR_USER_REGISTER_ERROR);
             throw new Utils_Exception(
-                $msg."_".$ralRet['code'],
+                $msg,
                 Const_Error::ERROR_USER_REGISTER_ERROR
             );
             return $result;
