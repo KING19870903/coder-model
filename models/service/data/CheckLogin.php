@@ -35,7 +35,8 @@ class Service_Data_CheckLogin {
     /**
      * 获取区块链用户信息
      * @param $uid
-     * @return array
+     * @return array|mixed
+     * @throws Utils_Exception
      */
     public function isChainUserExists($uid) {
 

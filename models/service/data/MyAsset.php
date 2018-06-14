@@ -34,6 +34,7 @@ class Service_Data_MyAsset {
      * @param $uid
      * @param array $arrInput
      * @return array
+     * @throws Utils_Exception
      */
     public function getMyAsset($uid, array $arrInput) {
 
