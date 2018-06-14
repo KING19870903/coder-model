@@ -55,6 +55,12 @@ class Utils_Util {
             $arrRet['vername'] = $result['vername'];
             $arrRet['text'] = $result['text'];
             $arrRet['title'] = $result['title'];
+        } else {
+            // 兜底版本
+            $arrRet['vercode'] = $arrResult[0]['vercode'];
+            $arrRet['vername'] = $arrResult[0]['vername'];
+            $arrRet['text'] = $arrResult[0]['text'];
+            $arrRet['title'] = $arrResult[0]['title'];
         }
 
         return $arrRet;
