@@ -21,12 +21,10 @@ class Service_Page_Api_RegisterChainUser extends Base_Page {
 
         $result =  array();
 
-        // 未登录用户直接抛出异常
+        // 未登录的不做后续处理
         if(!$this->useInfo['uid']) {
-            $result['data'] = array(
-                'isUserLogin' => false
-            );
-            $this->arrOutput = Utils_Output::SuccessArray($result);
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_LOGIN);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
             return;
         }
 
@@ -36,7 +34,6 @@ class Service_Page_Api_RegisterChainUser extends Base_Page {
             $this->arrInput
         );
 
-        $retInfo['isUserLogin'] = true;
         $result['data'] = $retInfo;
         $this->arrOutput = Utils_Output::SuccessArray($result);
     }

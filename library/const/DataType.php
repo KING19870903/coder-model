@@ -21,8 +21,11 @@ class Const_DataType {
     // 首页banner卡片类型
     const DATATYPE_HOME_BANNER = 3;
 
-    // 首页推荐应用卡片类型
-    const DATATYPE_HOEM_RECOMMEND_DAPP = 4;
+    // 我的资产列表页项卡片类型
+    const DATATYPE_MYASSET_ITEM = 4;
+
+    // 我的资产交易记录卡片类型
+    const DATATYPE_MYASSET_TRANSACT_LIST = 5;
 
     /**
      * 我的资产卡片

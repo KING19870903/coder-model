@@ -82,13 +82,6 @@ class Utils_Params {
 
         // 特殊字符处理
         self::filterHtmlChars($paramKey);
-
-        // pu参数
-        self::parsePu($paramKey);
-
-        // uid
-        self::parseUid($paramKey);
-
     }
 
     /**
@@ -97,7 +90,7 @@ class Utils_Params {
      */
     protected static function filterHtmlChars($paramKey) {
         $arrSpecialKeys
-            = array('from', 'cid', 'f', 'uid', 'baiduid', 'ssid', 'bd_page_type', 'assets_debug', 'action', 'tj');
+            = array('from', 'fParam', 'uid', 'action');
 
         foreach ($arrSpecialKeys as $key) {
             if (!empty(self::$arrParsedParams[$paramKey][$key])) {
@@ -108,38 +101,7 @@ class Utils_Params {
     }
 
     /**
-     * pu参数解析
-     * @param $paramKey
-     */
-    protected static function parsePu($paramKey) {
-
-        if (empty(self::$arrParsedParams[$paramKey]['pu'])) {
-            return;
-        }
-
-        $arrPuParams = As_Utils_ACommon::decompose(self::$arrParsedParams[$paramKey]["pu"]);
-
-        self::$arrParsedParams[$paramKey] = array_merge(
-            self::$arrParsedParams[$paramKey],
-            (array) $arrPuParams
-        );
-    }
-
-    /**
-     * 解析uid
-     * @param $paramKey
-     */
-    protected static function parseUid($paramKey) {
-        $strUid = As_Utils_BdBase64::decodeB64(self::$arrParsedParams[$paramKey]['uid']);
-
-        if (!empty($strUid)) {
-            self::$arrParsedParams[$paramKey]['uid'] = $strUid;
-        }
-    }
-
-
-    /**
-     * 处理HTTP POST请求参数 (TODO : 编码情况是否需要转换待确认)
+     * 处理HTTP POST请求参数
      *
      * @static
      * @access public
@@ -153,9 +115,61 @@ class Utils_Params {
         self::filterHtmlChars($paramKey);
 
         // pu参数
-        self::parsePu($paramKey);
+        self::parsePu();
 
         // uid
-        self::parseUid($paramKey);
+        self::parseUid();
+
+        // bduss参数
+        self::parseBduss();
+    }
+
+    /**
+     * pu参数解析
+     * @param $paramKey
+     */
+    protected static function parsePu() {
+
+        if (empty(self::$arrParsedParams['services']['pu'])) {
+            return;
+        }
+
+        // 解析pu参数
+        $puValue = Utils_AesCipher::decrypt(self::$arrParsedParams['services']["pu"]);
+
+        if(!empty($puValue)) {
+            $arrPuParams = As_Utils_ACommon::decompose($puValue);
+            self::$arrParsedParams['services'] = array_merge(
+                self::$arrParsedParams['services'],
+                (array) $arrPuParams
+            );
+        }
+    }
+
+    /**
+     * 解析uid
+     */
+    protected static function parseUid() {
+
+        // urldecode & decrypt
+
+        $strUid = Utils_AesCipher::decrypt(self::$arrParsedParams['services']['uid']);
+
+        if (!empty($strUid)) {
+            self::$arrParsedParams['services']['uid'] = $strUid;
+        }
+    }
+
+    /**
+     * 解密bduss信息
+     */
+    protected static function parseBduss() {
+
+        // urldecode & decrypt
+        $bduss = Utils_AesCipher::decrypt(self::$arrParsedParams['services']['bduss']);
+
+        if(!empty($bduss)) {
+            self::$arrParsedParams['services']['bduss'] = $bduss;
+        }
     }
 }

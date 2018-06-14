@@ -21,15 +21,14 @@ class Dao_BlockChain {
     const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
     // 查询存储用户交易的区块链信息列表
-    const PATH_INFO_QUERY_USER_CHAIN_LIST = '/exp/api/wallet/bc/list?';
+    const PATH_INFO_QUERY_MY_ASSET = '/exp/api/wallet/bc/list?';
 
     // 查询用户的交易列表
-    const PATH_INFO_QUERY_USER_CHAIN_DETAIL = '/exp/api/wallet/tx/list?';
+    const PATH_INFO_QUERY_USER_TRANSACT_LIST = '/exp/api/wallet/tx/list?';
 
-
-
-
-
+    /**
+     * Dao_BlockChain constructor.
+     */
     public function __construct() {
         // do nothing
     }
@@ -80,7 +79,6 @@ class Dao_BlockChain {
      * @param $uid
      * @param array $arrInput
      * @return array
-     * @throws Utils_Exception
      */
     public function registerChainUser($uid, array $arrInput) {
 
@@ -121,8 +119,48 @@ class Dao_BlockChain {
         return $ralRet['data'];
     }
 
+    /**
+     * 获取我的资产信息
+     * @param $uid
+     * @param $arrInput
+     * @return array
+     */
+    public function getMyAsset($uid, $arrInput) {
 
-    //按时间范围查询用户交易记录
+        $result = array();
+
+        // 拼装参数
+        $reqParams = array();
+        $reqParams['uid'] = $uid;
+        $reqParams['ps'] = !empty($arrInput['page_size']) ? $arrInput['page_size'] : Const_Common::DEFAULT_PAGE_SIZE ;
+        $reqParams['pn'] = !empty($arrInput['page_num']) ? $arrInput['page_num'] : Const_Common::DEFAULT_PAGE_NUM;
+
+        // ral服务请求
+        $queryUrl = self::PATH_INFO_QUERY_MY_ASSET . http_build_query($reqParams);
+        $ralRet = As_Base_RalBase::ralCall(
+            self::SERVICE_NAME,
+            $queryUrl,
+            'get'
+        );
+
+        // ral访问异常
+        $ralRet = json_decode($ralRet, true);
+        if(!$ralRet) {
+            return $result;
+        }
+
+        // 服务处理错误
+        if($ralRet && $ralRet['code'] != 0) {
+            As_Log_Lib::addNotice(
+                self::SERVICE_NAME."_exception",
+                $ralRet['msg']
+            );
+            return $result;
+        }
+
+        return $ralRet['data'];
+    }
+
     /**
      * queryTransactPropertyData
      * @description : 资产交易记录及查询接口
@@ -130,24 +168,25 @@ class Dao_BlockChain {
      * @param       $uid 百度passport id
      * @param array $arrInput 请求参数
      * @return array
+     * @throws Utils_Exception
      * @author zhaoxichao
-     * @date 12/06/2018
+     * @date 14/06/2018
      */
     public function queryTransactPropertyData($uid, $arrInput = array()) {
         $arrRet = array();
 
         // 拼装参数
         $reqParams = array();
-        $reqParams['uid'] = $uid;                       //百度passport id
-        $reqParams['name'] = $arrInput['name'];         //区块链名称
-        $reqParams['t_start'] = $arrInput['t_start'];   //产生交易的起始时间
-        $reqParams['t_end'] = $arrInput['t_end'];       //产生交易的结束时间
-        $reqParams['type'] = $arrInput['type'];         //交易类型；0：不区分交易类型；1:转入交易   2:转出交易；默认0
-        $reqParams['ps'] = $arrInput['ps'];             //分页大小
-        $reqParams['pn'] = $arrInput['pn'];             //分页页码
+        $reqParams['uid'] = $uid;                           //百度passport id
+        $reqParams['name'] = $arrInput['name'];             //区块链名称
+        $reqParams['t_start'] = $arrInput['time_start'];    //产生交易的起始时间
+        $reqParams['t_end'] = $arrInput['time_end'];        //产生交易的结束时间
+        $reqParams['type'] = $arrInput['trans_type'];       //交易类型；0：不区分交易类型；1:转入交易   2:转出交易；默认0
+        $reqParams['ps'] = $arrInput['ps'];                 //分页大小
+        $reqParams['pn'] = $arrInput['pn'];                 //分页页码
 
         // ral服务请求
-        $queryUrl = self::PATH_INFO_QUERY_USER_CHAIN_DETAIL . http_build_query($reqParams);
+        $queryUrl = self::PATH_INFO_QUERY_USER_TRANSACT_LIST . http_build_query($reqParams);
 
         $ralRet = As_Base_RalBase::ralCall(
             self::SERVICE_NAME,

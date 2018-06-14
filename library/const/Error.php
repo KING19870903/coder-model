@@ -11,10 +11,8 @@ class Const_Error extends As_Const_Exception{
     // 错误码前缀 --- xexplorer使用该前缀
     const EXCEPTION_CODE_PREFIX = 200;
 
-    // 区块链已存在该账号
+    // 用户未登录
     const ERROR_USER_NOT_LOGIN   = 2000;
-
-    const ERROR_CHAIN_EXIST_USER = 2001;
 
     // 用户未登录区块链账号
     const ERROR_CHAIN_NO_LOGIN_NO = 2002;
@@ -31,9 +29,7 @@ class Const_Error extends As_Const_Exception{
     //异常提示信息
     public static $EXCEPTION_MSG = array(
 
-        self::ERROR_USER_NOT_LOGIN => '用户未登录，请登陆后注册',
-
-        self::ERROR_CHAIN_EXIST_USER => '该百度账号已注册区块链账户',
+        self::ERROR_USER_NOT_LOGIN => '用户未登录',
 
         self::ERROR_CHAIN_NO_LOGIN_NO => '用户未登录区块链账号',
 
@@ -43,6 +39,18 @@ class Const_Error extends As_Const_Exception{
 
         self::ERROR_QUERY_TIME_RANGE => '查询交易起始时间大于交易结束时间',
     );
+
+    /**
+     * 获取错误码对应异常信息
+     * @param $code
+     * @return array
+     */
+    public static function getErrorInfo($code) {
+        $errorInfo = array();
+        $errorInfo['code'] = self::getErrCode($code);
+        $errorInfo['msg']  = self::getCodeMsg($code);
+        return $errorInfo;
+    }
 
     /**
      * 获取异常码对应的提示信息

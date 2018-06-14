@@ -10,13 +10,6 @@
  */
 class Service_Page_View_TransactProperty extends Base_Page {
     /**
-     * 默认分页大小
-     */
-    const PAGE_SIZE = 20;
-
-    private $is_debug = true;
-
-    /**
      * @var null|Service_Data_TransactProperty Data层对象实例
      */
     private $objDataService = null;
@@ -32,21 +25,19 @@ class Service_Page_View_TransactProperty extends Base_Page {
         //重写参数校验规则
         $this->arrValidate = array(
             'action' => array('notEmpty'),
-            'uid'    => array('notEmpty'),
             'sign'   => array('notEmpty'),
             'name'   => array('notEmpty'),
         );
 
         //初始化参数过滤规则
         $this->filterRule = array(
-            'uid'  => 'i',
+            'bduss' => 's',
             'name' => 's',
-            't_start' => 'i',
-            't_end' => 'i',
-            'type' => 'i',
+            'trans_type' => 'i',
+            'time_start' => 'i',
+            'time_end' => 'i',
             'ps' => 'i',
             'pn' => 'i',
-            'bduss' => 's',
         );
 
         //实例化Page层
@@ -57,13 +48,12 @@ class Service_Page_View_TransactProperty extends Base_Page {
      * call
      * @description : 资产交易记录及查询入口
      *
+     * @throws Utils_Exception
      * @author zhaoxichao
-     * @date 12/06/2018
+     * @date 14/06/2018
      */
     public function  call() {
         $arrRet = array();
-        $arrRes = array();
-        $arrResult = array();
 
         if (!$this->useInfo['isLogin']) {
             //用户未登录百度账号
@@ -90,72 +80,32 @@ class Service_Page_View_TransactProperty extends Base_Page {
 
         //查询交易记录数据
         $arrRet = $this->objDataService->getTransactPropertyData($uid, $this->arrInput);
-        if (!$arrRet['total'] || !$arrRet['txlist'] || !is_array($arrRet['txlist'])) {
-            //查询资产交易记录失败
-            throw new Utils_Exception(
-                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST],
-                Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST
-            );
-        }
 
-        //格式化输出数据
-        foreach ($arrRet['txlist'] as $key => $value) {
-            if (empty($value) || !is_array($value)) {
-                continue;
-            }
-            $arrTmp['dataType'] = 5;
-            $arrTmp['itemData'] = $value;
-            $arrTmp['itemData']['nameCn'] = isset($value['name_cn']) ? trim($value['name_cn']) : '';
-            $arrTmp['itemData']['diaplayAmount'] = isset($value['dispay_amount']) ? trim($value['dispay_amount']) : '';
-            $arrTmp['itemData']['transType'] = isset($value['type']) ? trim($value['type']) : '';
-            $arrTmp['itemData']['transTime'] = isset($value['timestamp']) ? date('m-d H:i', $value['timestamp']) : 0;
-
-            unset($arrTmp['itemData']['name_cn']);
-            unset($arrTmp['itemData']['dispay_amount']);
-            unset($arrTmp['itemData']['timestamp']);
-            unset($arrTmp['itemData']['type']);
-
-            if ($this->is_debug) {
-                for ($i = 0; $i < 10; $i++) {
-                    $arrRes[$i] =  $arrTmp;
-                }
-            } else {
-                $arrRes[] = $arrTmp;
-            }
-        }
-
-        //判断是否具有下一页   hasNextPage  TODO
-        $intOffset = ($this->arrInput['pn'] - 1) * self::PAGE_SIZE;
-        $arrResult['hasNextPage'] = ($intOffset + self::PAGE_SIZE < count($arrRes)) ? true : false;
-
-        $arrResult['data'] = array_slice($arrRes, $intOffset, self::PAGE_SIZE);
-
-
-        $this->arrOutput = $arrResult;
+        $this->arrOutput = $arrRet;
     }
 
     /**
      * handleParams
-     * @description : 根据接口要求预处理参数
+     * @description : 根据数据端接口要求预处理参数
      *
      * @param array $arrInput 请求参数
      * @throws Utils_Exception
      * @author zhaoxichao
-     * @date 12/06/2018
+     * @date 14/06/2018
      */
     private function handleParams($arrInput = array()) {
 
         //产生交易的时间范围--结束时间,默认接口访问的当前时间
-        $arrInput['t_end'] = (isset($arrInput['t_end']) && $arrInput['t_end'] > 0)? $arrInput['t_end'] : time();
+        $arrInput['time_end'] = (isset($arrInput['time_end']) && $arrInput['time_end'] > 0)? $arrInput['time_end'] : time();
 
         //分页大小，取值范围大于等于1且小于等于50,默认取20
-        $arrInput['ps'] = (isset($arrInput['ps']) && $arrInput['ps'] >= 1 && $arrInput['ps'] <= 50) ? $arrInput['ps'] : self::PAGE_SIZE ;
+        $arrInput['ps'] = (isset($arrInput['ps']) && $arrInput['ps'] >= 1 && $arrInput['ps'] <= 50) ? $arrInput['ps'] : Const_Common::DEFAULT_PAGE_SIZE;
 
         //默认页码为1
-        $arrInput['pn'] = (isset($arrInput['pn']) && $arrInput['pn'] >= 1) ? $arrInput['pn'] : 1;
+        $arrInput['pn'] = (isset($arrInput['pn']) && $arrInput['pn'] >= 1) ? $arrInput['pn'] : Const_Common::DEFAULT_PAGE_NUM;
 
         //比较起止时间
-        if ($arrInput['t_start'] >= $arrInput['t_end']) {
+        if ($arrInput['time_start'] >= $arrInput['time_end']) {
             //查询交易起始时间大于交易结束时间
             throw new Utils_Exception(
                 Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_QUERY_TIME_RANGE],
@@ -170,9 +120,9 @@ class Service_Page_View_TransactProperty extends Base_Page {
      * afterCall
      * @description : 返回层处理(日志打印,返回结果格式化)
      *
-     * @throws Exception
+     * @throws Utils_Exception
      * @author zhaoxichao
-     * @date king
+     * @date 14/06/2018
      */
     public function afterCall() {
         if (empty($this->arrOutput)) {
@@ -182,7 +132,6 @@ class Service_Page_View_TransactProperty extends Base_Page {
             );
         }
 
-        $this->arrOutput = Utils_Util::SuccessArray($this->arrOutput);
+        $this->arrOutput = Utils_Output::SuccessArray($this->arrOutput);
     }
-
 }

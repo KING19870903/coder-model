@@ -77,23 +77,4 @@ class Utils_Util {
 
         As_Request_Output::jsonPackGzip($arrOutput);
     }
-
-    /**
-     * SuccessArray
-     * @description : 结果数据格式化
-     *
-     * @param array  $data 请求结果
-     * @param string $msg 结果说明
-     * @return array
-     * @author zhaoxichao
-     * @date 12/06/2018
-     */
-    public static function SuccessArray($data = array(), $msg = '') {
-        $result = array(
-            'error_no' => 0,
-            'message' => $msg,
-            'result' => $data,
-        );
-        return $result;
-    }
 }

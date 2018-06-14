@@ -14,6 +14,8 @@ class Service_Page_View_UserCenter extends Base_Page{
 
         parent::__construct();
 
+        $this->isSignCheckOpen = false;
+
         $this->dataObj = new Service_Data_CheckLogin();
 
     }
@@ -32,8 +34,6 @@ class Service_Page_View_UserCenter extends Base_Page{
         if(!empty($this->useInfo['uid'])) {
             $signValue = Bd_Crypt_Ucrypt::ucrypt_encode($this->useInfo['uid'], $this->useInfo['displayname']);
             $data['userIcon'] = Const_Common::USER_ICON_NORMAL . $signValue;
-        } else {
-            $data['userIcon'] = Const_Common::USER_ICON_DEFAULT;
         }
 
         // 获取区块链用户地址
