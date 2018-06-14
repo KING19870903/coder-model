@@ -14,10 +14,15 @@ class Const_Error extends As_Const_Exception{
     // 用户未登录
     const ERROR_USER_NOT_LOGIN   = 2000;
 
+    // 未注册区块链账户
+    const ERROR_USER_NOT_CHAIN_USER = 2001;
+
     //异常提示信息
     public static $EXCEPTION_MSG = array(
 
         self::ERROR_USER_NOT_LOGIN => '用户未登录',
+
+        self::ERROR_USER_NOT_CHAIN_USER => '用户未注册区块链账号',
 
     );
 
