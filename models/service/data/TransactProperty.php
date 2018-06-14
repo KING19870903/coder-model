@@ -62,9 +62,8 @@ class Service_Data_TransactProperty {
      * @param       $uid 百度passport id
      * @param array $arrInput 请求参数
      * @return array
-     * @throws Utils_Exception
      * @author zhaoxichao
-     * @date king
+     * @date 14/06/2018
      */
     public function getTransactPropertyData($uid, $arrInput = array()) {
         $arrResult = array();
@@ -73,11 +72,9 @@ class Service_Data_TransactProperty {
         $arrRes = $this->objDao->queryTransactPropertyData($uid, $arrInput);
         if (!$arrRes['total'] || !$arrRes['txlist'] || !is_array($arrRes['txlist'])) {
             //查询资产交易记录失败
-
-            throw new Utils_Exception(
-                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST],
-                Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST
-            );
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
+            return;
         }
 
         $arrRetList = array();

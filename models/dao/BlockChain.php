@@ -168,7 +168,6 @@ class Dao_BlockChain {
      * @param       $uid 百度passport id
      * @param array $arrInput 请求参数
      * @return array
-     * @throws Utils_Exception
      * @author zhaoxichao
      * @date 14/06/2018
      */
@@ -187,7 +186,6 @@ class Dao_BlockChain {
 
         // ral服务请求
         $queryUrl = self::PATH_INFO_QUERY_USER_TRANSACT_LIST . http_build_query($reqParams);
-
         $ralRet = As_Base_RalBase::ralCall(
             self::SERVICE_NAME,
             $queryUrl,
@@ -198,16 +196,22 @@ class Dao_BlockChain {
         $ralRet = json_decode($ralRet, true);
         if(!$ralRet) {
             //解析数据失败
-            return $result;
+            As_Log_Lib::addNotice(
+                self::SERVICE_NAME."_exception",
+                'json_decode解析数据失败'
+            );
+            return $arrRet;
         }
 
         // 服务处理错误
         if($ralRet && $ralRet['code'] != 0) {
-            //解析数据失败
-            throw new Utils_Exception(
-                $ralRet['msg'],
-                $ralRet['code']
+            //服务处理错误
+            As_Log_Lib::addNotice(
+                self::SERVICE_NAME."_exception",
+                $ralRet['msg']
             );
+
+            return $arrRet;
         }
 
         $arrRet= $ralRet['data'];

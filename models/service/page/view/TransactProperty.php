@@ -9,6 +9,7 @@
  * @since : 11/06/2018
  */
 class Service_Page_View_TransactProperty extends Base_Page {
+
     /**
      * @var null|Service_Data_TransactProperty Data层对象实例
      */
@@ -22,12 +23,9 @@ class Service_Page_View_TransactProperty extends Base_Page {
         //开启签名校验并初始化参数校验规则
         parent::__construct();
 
-        //重写参数校验规则
-        $this->arrValidate = array(
-            'action' => array('notEmpty'),
-            'sign'   => array('notEmpty'),
-            'name'   => array('notEmpty'),
-        );
+        //添加参数校验规则
+        $this->arrValidate['name'] = array('notEmpty');
+
 
         //初始化参数过滤规则
         $this->filterRule = array(
@@ -48,7 +46,6 @@ class Service_Page_View_TransactProperty extends Base_Page {
      * call
      * @description : 资产交易记录及查询入口
      *
-     * @throws Utils_Exception
      * @author zhaoxichao
      * @date 14/06/2018
      */
@@ -79,7 +76,7 @@ class Service_Page_View_TransactProperty extends Base_Page {
         //查询交易记录数据
         $arrRet = $this->objDataService->getTransactPropertyData($uid, $this->arrInput);
 
-        $this->arrOutput = $arrRet;
+        $this->arrOutput = Utils_Output::SuccessArray($arrRet);
     }
 
     /**
@@ -87,7 +84,6 @@ class Service_Page_View_TransactProperty extends Base_Page {
      * @description : 根据数据端接口要求预处理参数
      *
      * @param array $arrInput 请求参数
-     * @throws Utils_Exception
      * @author zhaoxichao
      * @date 14/06/2018
      */
@@ -105,31 +101,11 @@ class Service_Page_View_TransactProperty extends Base_Page {
         //比较起止时间
         if ($arrInput['time_start'] >= $arrInput['time_end']) {
             //查询交易起始时间大于交易结束时间
-            throw new Utils_Exception(
-                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_QUERY_TIME_RANGE],
-                Const_Error::ERROR_QUERY_TIME_RANGE
-            );
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_QUERY_TIME_RANGE);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
+            return;
         }
 
         $this->arrInput = $arrInput;
-    }
-
-    /**
-     * afterCall
-     * @description : 返回层处理(日志打印,返回结果格式化)
-     *
-     * @throws Utils_Exception
-     * @author zhaoxichao
-     * @date 14/06/2018
-     */
-    public function afterCall() {
-        if (empty($this->arrOutput)) {
-            throw new Utils_Exception(
-                As_Const_Error::$ERROR_MSG[As_Const_Error::ERROR_CANT_FIND_DATA],
-                As_Const_Error::ERROR_CANT_FIND_DATA
-            );
-        }
-
-        $this->arrOutput = Utils_Output::SuccessArray($this->arrOutput);
     }
 }
