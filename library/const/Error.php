@@ -16,6 +16,18 @@ class Const_Error extends As_Const_Exception{
 
     const ERROR_CHAIN_EXIST_USER = 2001;
 
+    // 用户未登录区块链账号
+    const ERROR_CHAIN_NO_LOGIN_NO = 2002;
+
+    // 查询交易记录失败
+    const ERROR_QUERY_USER_CHAIN_LIST = 2003;
+
+    // 查询交易记录为空
+    const ERROR_EMPTY_QUERY_USER_CHAIN_LIST = 2004;
+
+    // 查询交易起始时间大于交易结束时间
+    const ERROR_QUERY_TIME_RANGE = 2005;
+
     //异常提示信息
     public static $EXCEPTION_MSG = array(
 
@@ -23,6 +35,13 @@ class Const_Error extends As_Const_Exception{
 
         self::ERROR_CHAIN_EXIST_USER => '该百度账号已注册区块链账户',
 
+        self::ERROR_CHAIN_NO_LOGIN_NO => '用户未登录区块链账号',
+
+        self::ERROR_QUERY_USER_CHAIN_LIST => '查询用户资产交易记录失败',
+
+        self::ERROR_EMPTY_QUERY_USER_CHAIN_LIST => '查询交易记录为空',
+
+        self::ERROR_QUERY_TIME_RANGE => '查询交易起始时间大于交易结束时间',
     );
 
     /**

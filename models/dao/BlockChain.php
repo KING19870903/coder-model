@@ -20,6 +20,15 @@ class Dao_BlockChain {
     // 为用户创建区块链账户
     const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
+    // 查询存储用户交易的区块链信息列表
+    const PATH_INFO_QUERY_USER_CHAIN_LIST = '/exp/api/wallet/bc/list?';
+
+    // 查询用户的交易列表
+    const PATH_INFO_QUERY_USER_CHAIN_DETAIL = '/exp/api/wallet/tx/list?';
+
+
+
+
 
     public function __construct() {
         // do nothing
@@ -110,5 +119,63 @@ class Dao_BlockChain {
 
         $ralRet['data']['isHaveRegister'] = false;
         return $ralRet['data'];
+    }
+
+
+    //按时间范围查询用户交易记录
+    /**
+     * queryTransactPropertyData
+     * @description : 资产交易记录及查询接口
+     *
+     * @param       $uid 百度passport id
+     * @param array $arrInput 请求参数
+     * @return array
+     * @author zhaoxichao
+     * @date 12/06/2018
+     */
+    public function queryTransactPropertyData($uid, $arrInput = array()) {
+        $arrRet = array();
+
+        // 拼装参数
+        $reqParams = array();
+        $reqParams['uid'] = $uid;                       //百度passport id
+        $reqParams['name'] = $arrInput['name'];         //区块链名称
+        $reqParams['t_start'] = $arrInput['t_start'];   //产生交易的起始时间
+        $reqParams['t_end'] = $arrInput['t_end'];       //产生交易的结束时间
+        $reqParams['type'] = $arrInput['type'];         //交易类型；0：不区分交易类型；1:转入交易   2:转出交易；默认0
+        $reqParams['ps'] = $arrInput['ps'];             //分页大小
+        $reqParams['pn'] = $arrInput['pn'];             //分页页码
+
+        // ral服务请求
+        $queryUrl = self::PATH_INFO_QUERY_USER_CHAIN_DETAIL . http_build_query($reqParams);
+
+        $ralRet = As_Base_RalBase::ralCall(
+            self::SERVICE_NAME,
+            $queryUrl,
+            'get'
+        );
+
+        // ral访问异常
+        $ralRet = json_decode($ralRet, true);
+        if(!$ralRet) {
+            //解析数据失败
+            throw new Utils_Exception(
+                Const_Error::$COMMON_ERROR_MSG[Const_Error::ERROR_PARSE_DATA],
+                Const_Error::ERROR_PARSE_DATA
+            );
+        }
+
+        // 服务处理错误
+        if($ralRet && $ralRet['code'] != 0) {
+            //解析数据失败
+            throw new Utils_Exception(
+                $ralRet['msg'],
+                $ralRet['code']
+            );
+        }
+
+        $arrRet= $ralRet['data'];
+
+        return $arrRet;
     }
 }

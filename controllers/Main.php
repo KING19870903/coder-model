@@ -18,5 +18,7 @@ class Controller_Main extends Ap_Controller_Abstract {
 
         'usercenter'   =>   'actions/view/UserCenter.php',      //我的页面
 
+        'transactproperty'   =>   'actions/view/TransactProperty.php',  //资产交易记录查询
+
 	);
 }

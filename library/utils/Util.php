@@ -59,4 +59,41 @@ class Utils_Util {
 
         return $arrRet;
     }
+
+    /**
+     * jsonPackGzip
+     * @description : 数组转成json并且gzip压缩
+     *
+     * @param        $arrOutput   输出数据
+     * @param string $pageTagExt  page标签
+     * @author zhaoxichao
+     * @date 23/03/2018
+     */
+    public static function jsonPackGzip($arrOutput, $pageTagExt = '') {
+        if (isset($_GET['qa']) && $_GET['qa'] == 'test') {
+            echo json_encode($arrOutput);
+            return;
+        }
+
+        As_Request_Output::jsonPackGzip($arrOutput);
+    }
+
+    /**
+     * SuccessArray
+     * @description : 结果数据格式化
+     *
+     * @param array  $data 请求结果
+     * @param string $msg 结果说明
+     * @return array
+     * @author zhaoxichao
+     * @date 12/06/2018
+     */
+    public static function SuccessArray($data = array(), $msg = '') {
+        $result = array(
+            'error_no' => 0,
+            'message' => $msg,
+            'result' => $data,
+        );
+        return $result;
+    }
 }
