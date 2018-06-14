@@ -21,14 +21,12 @@ class Dao_BlockChain {
     const PATH_INFO_REGISTER_CHAIN_USER = '/exp/api/add/create?';
 
     // 查询存储用户交易的区块链信息列表
+
     const PATH_INFO_QUERY_MY_ASSET = '/exp/api/wallet/bc/list?';
 
     // 查询用户的交易列表
     const PATH_INFO_QUERY_USER_TRANSACT_LIST = '/exp/api/wallet/tx/list?';
 
-    /**
-     * Dao_BlockChain constructor.
-     */
     public function __construct() {
         // do nothing
     }
@@ -169,7 +167,7 @@ class Dao_BlockChain {
      * @param array $arrInput 请求参数
      * @return array
      * @author zhaoxichao
-     * @date 14/06/2018
+     * @date 12/06/2018
      */
     public function queryTransactPropertyData($uid, $arrInput = array()) {
         $arrRet = array();
@@ -210,12 +208,9 @@ class Dao_BlockChain {
                 self::SERVICE_NAME."_exception",
                 $ralRet['msg']
             );
-
             return $arrRet;
         }
 
-        $arrRet= $ralRet['data'];
-
-        return $arrRet;
+        return $ralRet['data'];
     }
 }

@@ -26,7 +26,6 @@ class Service_Page_View_TransactProperty extends Base_Page {
         //添加参数校验规则
         $this->arrValidate['name'] = array('notEmpty');
 
-
         //初始化参数过滤规则
         $this->filterRule = array(
             'bduss' => 's',
