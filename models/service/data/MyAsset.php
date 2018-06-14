@@ -65,7 +65,6 @@ class Service_Data_MyAsset {
                 Const_DataType::DATATYPE_MYASSET_ITEM,
                 $bcItem
             );
-
             $bcList[] = $bcItem;
         }
 

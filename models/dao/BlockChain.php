@@ -174,16 +174,16 @@ class Dao_BlockChain {
      */
     public function queryTransactPropertyData($uid, $arrInput = array()) {
         $arrRet = array();
+        $reqParams = array();
 
         // 拼装参数
-        $reqParams = array();
         $reqParams['uid'] = $uid;                           //百度passport id
         $reqParams['name'] = $arrInput['name'];             //区块链名称
         $reqParams['t_start'] = $arrInput['time_start'];    //产生交易的起始时间
         $reqParams['t_end'] = $arrInput['time_end'];        //产生交易的结束时间
         $reqParams['type'] = $arrInput['trans_type'];       //交易类型；0：不区分交易类型；1:转入交易   2:转出交易；默认0
-        $reqParams['ps'] = $arrInput['ps'];                 //分页大小
-        $reqParams['pn'] = $arrInput['pn'];                 //分页页码
+        $reqParams['ps'] = $arrInput['page_size'];                 //分页大小
+        $reqParams['pn'] = $arrInput['page_num'];                 //分页页码
 
         // ral服务请求
         $queryUrl = self::PATH_INFO_QUERY_USER_TRANSACT_LIST . http_build_query($reqParams);
@@ -198,10 +198,7 @@ class Dao_BlockChain {
         $ralRet = json_decode($ralRet, true);
         if(!$ralRet) {
             //解析数据失败
-            throw new Utils_Exception(
-                Const_Error::$COMMON_ERROR_MSG[Const_Error::ERROR_PARSE_DATA],
-                Const_Error::ERROR_PARSE_DATA
-            );
+            return $result;
         }
 
         // 服务处理错误

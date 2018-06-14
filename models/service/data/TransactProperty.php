@@ -73,6 +73,7 @@ class Service_Data_TransactProperty {
         $arrRes = $this->objDao->queryTransactPropertyData($uid, $arrInput);
         if (!$arrRes['total'] || !$arrRes['txlist'] || !is_array($arrRes['txlist'])) {
             //查询资产交易记录失败
+
             throw new Utils_Exception(
                 Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST],
                 Const_Error::ERROR_EMPTY_QUERY_USER_CHAIN_LIST
@@ -87,7 +88,7 @@ class Service_Data_TransactProperty {
                 continue;
             }
 
-            //
+            // 格式化下发数据
             foreach (self::$MY_ASSET_TRANSACT_FIELDS as $oriKey => $retKey) {
                 if(isset($value[$oriKey])) {
                     $arrRet[$retKey] = $value[$oriKey];
@@ -105,20 +106,12 @@ class Service_Data_TransactProperty {
                 $arrRet
             );
 
-            $is_debug = true;
-            if ($is_debug) {
-                // 伪造数据 上线前必须删除 TODO
-                for ($i = 0; $i < 10; $i++) {
-                    $arrRetList[$i] =  $arrRet;
-                }
-            } else {
-                $arrRetList[] = $arrRet;
-            }
+            $arrRetList[] = $arrRet;
         }
 
         //判断是否具有下一页
         $arrResult['hasNextPage'] = false;
-        if($arrRes['total'] > Const_Common::DEFAULT_PAGE_SIZE * $arrInput['pn']) {
+        if($arrRes['total'] > $arrInput['page_size'] * $arrInput['page_num']) {
             $arrResult['hasNextPage'] = true;
         }
 

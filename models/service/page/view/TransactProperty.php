@@ -57,10 +57,9 @@ class Service_Page_View_TransactProperty extends Base_Page {
 
         if (!$this->useInfo['isLogin']) {
             //用户未登录百度账号
-            throw new Utils_Exception(
-                Const_Error::$COMMON_ERROR_MSG[Const_Error::ERROR_BUDSS_NO_LOGIN_NO],
-                Const_Error::ERROR_BUDSS_NO_LOGIN_NO
-            );
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_LOGIN);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
+            return;
         }
 
         $uid = intval($this->useInfo['uid']);
@@ -69,10 +68,9 @@ class Service_Page_View_TransactProperty extends Base_Page {
         $chainInfo = $this->objDataService->isChainUserExists($uid);
         if (!$chainInfo['address']) {
             //用户未登录区块链账号
-            throw new Utils_Exception(
-                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_CHAIN_NO_LOGIN_NO],
-                Const_Error::ERROR_CHAIN_NO_LOGIN_NO
-            );
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_CHAIN_USER);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
+            return;
         }
 
         //根据接口要求预处理参数
@@ -99,10 +97,10 @@ class Service_Page_View_TransactProperty extends Base_Page {
         $arrInput['time_end'] = (isset($arrInput['time_end']) && $arrInput['time_end'] > 0)? $arrInput['time_end'] : time();
 
         //分页大小，取值范围大于等于1且小于等于50,默认取20
-        $arrInput['ps'] = (isset($arrInput['ps']) && $arrInput['ps'] >= 1 && $arrInput['ps'] <= 50) ? $arrInput['ps'] : Const_Common::DEFAULT_PAGE_SIZE;
+        $arrInput['page_size'] = (isset($arrInput['page_size']) && $arrInput['page_size'] >= 1 && $arrInput['page_size'] <= 50) ? $arrInput['page_size'] : Const_Common::DEFAULT_PAGE_SIZE;
 
         //默认页码为1
-        $arrInput['pn'] = (isset($arrInput['pn']) && $arrInput['pn'] >= 1) ? $arrInput['pn'] : Const_Common::DEFAULT_PAGE_NUM;
+        $arrInput['page_num'] = (isset($arrInput['page_num']) && $arrInput['page_num'] >= 1) ? $arrInput['page_num'] : Const_Common::DEFAULT_PAGE_NUM;
 
         //比较起止时间
         if ($arrInput['time_start'] >= $arrInput['time_end']) {

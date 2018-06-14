@@ -14,8 +14,8 @@ class Const_Error extends As_Const_Exception{
     // 用户未登录
     const ERROR_USER_NOT_LOGIN   = 2000;
 
-    // 用户未登录区块链账号
-    const ERROR_CHAIN_NO_LOGIN_NO = 2002;
+    // 未注册区块链账户
+    const ERROR_USER_NOT_CHAIN_USER = 2001;
 
     // 查询交易记录失败
     const ERROR_QUERY_USER_CHAIN_LIST = 2003;
@@ -29,9 +29,9 @@ class Const_Error extends As_Const_Exception{
     //异常提示信息
     public static $EXCEPTION_MSG = array(
 
-        self::ERROR_USER_NOT_LOGIN => '用户未登录',
+        self::ERROR_USER_NOT_CHAIN_USER => '用户未注册区块链账号',
 
-        self::ERROR_CHAIN_NO_LOGIN_NO => '用户未登录区块链账号',
+        self::ERROR_USER_NOT_LOGIN => '用户未登录',
 
         self::ERROR_QUERY_USER_CHAIN_LIST => '查询用户资产交易记录失败',
 

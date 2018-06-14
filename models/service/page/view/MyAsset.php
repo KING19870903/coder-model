@@ -8,14 +8,23 @@
 
 class Service_Page_View_MyAsset extends Base_Page{
 
+    /**
+     * @var Service_Data_MyAsset
+     */
     private $dataObj;
+
+    /**
+     * @var Service_Data_CheckLogin
+     */
+    private $dataCheckLoginObj;
 
     public function __construct() {
 
         parent::__construct();
-
+        
         $this->dataObj = new Service_Data_MyAsset();
 
+        $this->dataCheckLoginObj = new Service_Data_CheckLogin();
     }
 
     public function call() {
@@ -25,6 +34,14 @@ class Service_Page_View_MyAsset extends Base_Page{
         // 未登录的不做后续处理
         if(!$this->useInfo['uid']) {
             $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_LOGIN);
+            $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
+            return;
+        }
+
+        // 非注册区块链账户提示用户未注册
+        $isChainUserExists = $this->dataCheckLoginObj->isChainUserExists($this->useInfo['uid']);
+        if(empty($isChainUserExists)){
+            $errInfo = Const_Error::getErrorInfo(Const_Error::ERROR_USER_NOT_CHAIN_USER);
             $this->arrOutput = Utils_Output::FailArray($errInfo['code'], $errInfo['msg']);
             return;
         }

@@ -28,7 +28,7 @@ class Service_Data_HelpWords {
 
         //通过RAL服务获取资管资源数据
         $arrRes = As_Dc_OamApi::getResourceInfo($arrResourceIds);
-
+echo json_encode($arrRes);die;
         $arrRet = isset($arrRes[Const_Anxun::RESOURCE_HELP_WORDS]) && !empty($arrRes[Const_Anxun::RESOURCE_HELP_WORDS]) ?  $arrRes[Const_Anxun::RESOURCE_HELP_WORDS] : array();
         if (empty($arrRet) || !is_array($arrRet)) {
             return array();
