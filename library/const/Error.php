@@ -22,6 +22,7 @@ class Const_Error extends As_Const_Exception{
 
     // 区块链账户注册失败
     const ERROR_USER_REGISTER_ERROR = 2006;
+    
 
     // 获取资产信息异常
     const ERROR_GET_MYASSET_ERROR = 2007;
