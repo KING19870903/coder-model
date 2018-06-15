@@ -17,22 +17,39 @@ class Const_Error extends As_Const_Exception{
     // 未注册区块链账户
     const ERROR_USER_NOT_CHAIN_USER = 2001;
 
+    // 调用区块链服务判断登录状态异常
+    const ERROR_USER_CHECK_CHAIN_USER = 2002;
+
     // 查询交易记录失败
     const ERROR_QUERY_USER_CHAIN_LIST = 2003;
+
+    // 区块链账户注册失败
+    const ERROR_USER_REGISTER_ERROR = 2006;
 
     // 查询交易起始时间大于交易结束时间
     const ERROR_QUERY_TIME_RANGE = 2005;
 
+    // 获取资产信息异常
+    const ERROR_GET_MYASSET_ERROR = 2007;
+
+
     //异常提示信息
     public static $EXCEPTION_MSG = array(
 
-        self::ERROR_USER_NOT_CHAIN_USER => '用户未注册区块链账号',
+       self::ERROR_USER_NOT_LOGIN => '用户未登录',
 
-        self::ERROR_USER_NOT_LOGIN => '用户未登录',
+       self::ERROR_USER_NOT_CHAIN_USER => '用户未注册区块链账号',
 
-        self::ERROR_QUERY_USER_CHAIN_LIST => '查询用户资产交易记录失败',
+       self::ERROR_USER_CHECK_CHAIN_USER => '查询区块链账户信息异常',
 
-        self::ERROR_QUERY_TIME_RANGE => '查询交易起始时间大于交易结束时间',
+       self::ERROR_QUERY_USER_CHAIN_LIST => '查询用户资产交易记录失败',
+
+       self::ERROR_USER_REGISTER_ERROR => '区块链账户注册失败',
+
+       self::ERROR_QUERY_TIME_RANGE => '查询交易起始时间大于交易结束时间',
+
+       self::ERROR_GET_MYASSET_ERROR => '获取我的资产信息异常',
+
     );
 
     /**

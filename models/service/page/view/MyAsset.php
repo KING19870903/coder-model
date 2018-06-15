@@ -21,7 +21,7 @@ class Service_Page_View_MyAsset extends Base_Page{
     public function __construct() {
 
         parent::__construct();
-        
+
         $this->dataObj = new Service_Data_MyAsset();
 
         $this->dataCheckLoginObj = new Service_Data_CheckLogin();
@@ -46,13 +46,18 @@ class Service_Page_View_MyAsset extends Base_Page{
             return;
         }
 
-        // 默认分页大小
-        if(!isset($this->arrInput['page_size'])) {
+        // 默认分页大小 (单页限制不超过50)
+        if(!isset($this->arrInput['page_size'])
+            || !is_numeric($this->arrInput['page_size'])
+            || $this->arrInput['page_size'] <= 0
+            || $this->arrInput['page_size'] > 50) {
             $this->arrInput['page_size'] = Const_Common::DEFAULT_PAGE_SIZE;
         }
 
         // 默认访问page_num为1
-        if(!isset($this->arrInput['page_num'])) {
+        if(!isset($this->arrInput['page_num'])
+            || !is_numeric($this->arrInput['page_num'])
+            || $this->arrInput['page_num'] <= 0) {
             $this->arrInput['page_num'] = Const_Common::DEFAULT_PAGE_NUM;
         }
 

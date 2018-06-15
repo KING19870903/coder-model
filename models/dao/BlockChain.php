@@ -36,6 +36,7 @@ class Dao_BlockChain {
      * 判断区块链用户是否存在
      * @param $uid
      * @return array
+     * @throws Utils_Exception
      */
     public function queryChainUser($uid) {
 
@@ -56,14 +57,30 @@ class Dao_BlockChain {
         $ralRet = json_decode($ralRet, true);
         // ral访问异常
         if(!$ralRet) {
+
+            As_Log_Lib::addNotice(
+                "queryChainUser_call",
+                "ral_false_error"
+            );
+
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_USER_CHECK_CHAIN_USER);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_USER_CHECK_CHAIN_USER
+            );
             return $result;
         }
 
-        // 服务处理错误
+        // 处理下游服务返回错误码
         if($ralRet && $ralRet['code'] != 0) {
             As_Log_Lib::addNotice(
-                self::SERVICE_NAME."_exception",
+                "queryChainUser_exception",
                 $ralRet['msg']
+            );
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_USER_CHECK_CHAIN_USER);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_USER_CHECK_CHAIN_USER
             );
             return $result;
         }
@@ -77,6 +94,7 @@ class Dao_BlockChain {
      * @param $uid
      * @param array $arrInput
      * @return array
+     * @throws Utils_Exception
      */
     public function registerChainUser($uid, array $arrInput) {
 
@@ -100,20 +118,35 @@ class Dao_BlockChain {
         // ral访问异常
         $ralRet = json_decode($ralRet, true);
         if(!$ralRet) {
+            As_Log_Lib::addNotice(
+                "registerChainUser_call",
+                "ral_false_error"
+            );
+
+            // 抛出异常
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_USER_REGISTER_ERROR);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_USER_REGISTER_ERROR
+            );
             return $result;
         }
 
-        // 服务处理错误
+        // 处理下游服务返回错误码
         if($ralRet && $ralRet['code'] != 0) {
             As_Log_Lib::addNotice(
-                self::SERVICE_NAME."_exception",
+                "registerChainUser_exception",
                 $ralRet['msg']
             );
-            $result['isHaveRegister'] = true;
+            // 抛出异常
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_USER_REGISTER_ERROR);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_USER_REGISTER_ERROR
+            );
             return $result;
         }
 
-        $ralRet['data']['isHaveRegister'] = false;
         return $ralRet['data'];
     }
 
@@ -122,6 +155,7 @@ class Dao_BlockChain {
      * @param $uid
      * @param $arrInput
      * @return array
+     * @throws Utils_Exception
      */
     public function getMyAsset($uid, $arrInput) {
 
@@ -130,8 +164,8 @@ class Dao_BlockChain {
         // 拼装参数
         $reqParams = array();
         $reqParams['uid'] = $uid;
-        $reqParams['ps'] = !empty($arrInput['page_size']) ? $arrInput['page_size'] : Const_Common::DEFAULT_PAGE_SIZE ;
-        $reqParams['pn'] = !empty($arrInput['page_num']) ? $arrInput['page_num'] : Const_Common::DEFAULT_PAGE_NUM;
+        $reqParams['ps'] = $arrInput['page_size'];
+        $reqParams['pn'] = $arrInput['page_num'];
 
         // ral服务请求
         $queryUrl = self::PATH_INFO_QUERY_MY_ASSET . http_build_query($reqParams);
@@ -144,14 +178,28 @@ class Dao_BlockChain {
         // ral访问异常
         $ralRet = json_decode($ralRet, true);
         if(!$ralRet) {
+            As_Log_Lib::addNotice(
+                "getMyAsset_call",
+                "ral_false_error"
+            );
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_GET_MYASSET_ERROR);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_GET_MYASSET_ERROR
+            );
             return $result;
         }
 
-        // 服务处理错误
+        // 处理下游服务返回错误码
         if($ralRet && $ralRet['code'] != 0) {
             As_Log_Lib::addNotice(
-                self::SERVICE_NAME."_exception",
+                "getMyAsset_exception",
                 $ralRet['msg']
+            );
+            $msg = Const_Error::getCodeMsg(Const_Error::ERROR_GET_MYASSET_ERROR);
+            throw new Utils_Exception(
+                $msg,
+                Const_Error::ERROR_GET_MYASSET_ERROR
             );
             return $result;
         }
