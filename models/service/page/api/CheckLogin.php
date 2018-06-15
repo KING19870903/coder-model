@@ -38,11 +38,12 @@ class Service_Page_Api_CheckLogin extends Base_Page {
 
         // 区块链账户是否存在
         $chainUserInfo = $this->dataObj->isChainUserExists($this->useInfo['uid']);
-
         if ($chainUserInfo['has_account']) {
             $data['chainUserExist'] = true;
             $data['userAddress'] = $chainUserInfo['address'];
+            $data['jumpUrl'] = Const_Common::SCHEMA_REGISTER_CHAIN_PAGE_URL;
         }
+
         $result['data'] = $data;
         $this->arrOutput = Utils_Output::SuccessArray($result);
     }
