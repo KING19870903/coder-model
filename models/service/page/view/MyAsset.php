@@ -22,8 +22,6 @@ class Service_Page_View_MyAsset extends Base_Page{
 
         parent::__construct();
 
-        $this->isSignCheckOpen = false;
-
         $this->dataObj = new Service_Data_MyAsset();
 
         $this->dataCheckLoginObj = new Service_Data_CheckLogin();

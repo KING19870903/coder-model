@@ -14,8 +14,6 @@ class Service_Page_View_UserCenter extends Base_Page{
 
         parent::__construct();
 
-        $this->isSignCheckOpen = false;
-
         $this->dataObj = new Service_Data_CheckLogin();
 
     }
