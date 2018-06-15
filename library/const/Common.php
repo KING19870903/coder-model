@@ -39,4 +39,14 @@ class Const_Common {
     const USER_ICON_NORMAL = 'https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/';
 
     //const USER_ICON_HIGN   = 'https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portraith/item/';
+
+    /**
+     * 跳转链接相关
+     */
+
+    // 注册区块链跳转链接
+    const SCHEMA_REGISTER_CHAIN_PAGE_URL = 'router://xexplorer/account/xchainaccregister';
+
+    // 查询交易详情页面链接
+    const SCHEMA_QUERY_TRANSACT_PAGE_URL = 'router://xexplorer/asset/assettranshistroy';
 }

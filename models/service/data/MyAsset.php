@@ -61,6 +61,9 @@ class Service_Data_MyAsset {
             $fParamInput[] = $info['name'];
             $bcItem['fParam'] = Const_FParam::getFparam(Const_FParam::F_MYASSET_ITEM, $fParamInput);
 
+            // schema跳转链接
+            $bcItem['jumpUrl'] = Const_Common::SCHEMA_QUERY_TRANSACT_PAGE_URL."?name=".$info['name'];
+
             // 拼接端上返回卡片样式
             $bcItem = Const_DataType::getDataTypeCard(
                 Const_DataType::DATATYPE_MYASSET_ITEM,

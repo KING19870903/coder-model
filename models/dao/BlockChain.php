@@ -201,6 +201,7 @@ class Dao_BlockChain {
         return $ralRet['data'];
     }
 
+
     /**
      * queryTransactPropertyData
      * @description : 资产交易记录及查询接口
@@ -208,8 +209,9 @@ class Dao_BlockChain {
      * @param       $uid 百度passport id
      * @param array $arrInput 请求参数
      * @return array
+     * @throws Utils_Exception
      * @author zhaoxichao
-     * @date 12/06/2018
+     * @date 15/06/2018
      */
     public function queryTransactPropertyData($uid, $arrInput = array()) {
         $arrRet = array();
@@ -244,7 +246,6 @@ class Dao_BlockChain {
                 Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_USER_CHECK_CHAIN_USER],
                 Const_Error::ERROR_USER_CHECK_CHAIN_USER
             );
-            return $arrRet;
         }
 
         // 服务处理错误
@@ -258,7 +259,6 @@ class Dao_BlockChain {
                 Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_QUERY_USER_CHAIN_LIST] .': '. $ralRet['msg'],
                 Const_Error::ERROR_QUERY_USER_CHAIN_LIST
             );
-            return $arrRet;
         }
 
         return $ralRet['data'];
