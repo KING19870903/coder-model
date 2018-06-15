@@ -68,7 +68,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_USER_CHECK_CHAIN_USER
             );
-            return $result;
         }
 
         // 处理下游服务返回错误码
@@ -82,7 +81,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_USER_CHECK_CHAIN_USER
             );
-            return $result;
         }
 
         return $ralRet['data'];
@@ -129,7 +127,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_USER_REGISTER_ERROR
             );
-            return $result;
         }
 
         // 处理下游服务返回错误码
@@ -144,7 +141,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_USER_REGISTER_ERROR
             );
-            return $result;
         }
 
         return $ralRet['data'];
@@ -187,7 +183,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_GET_MYASSET_ERROR
             );
-            return $result;
         }
 
         // 处理下游服务返回错误码
@@ -201,7 +196,6 @@ class Dao_BlockChain {
                 $msg,
                 Const_Error::ERROR_GET_MYASSET_ERROR
             );
-            return $result;
         }
 
         return $ralRet['data'];
@@ -246,6 +240,10 @@ class Dao_BlockChain {
                 self::SERVICE_NAME."_exception",
                 'json_decode解析数据失败'
             );
+            throw new Utils_Exception(
+                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_USER_CHECK_CHAIN_USER],
+                Const_Error::ERROR_USER_CHECK_CHAIN_USER
+            );
             return $arrRet;
         }
 
@@ -255,6 +253,10 @@ class Dao_BlockChain {
             As_Log_Lib::addNotice(
                 self::SERVICE_NAME."_exception",
                 $ralRet['msg']
+            );
+            throw new Utils_Exception(
+                Const_Error::$EXCEPTION_MSG[Const_Error::ERROR_QUERY_USER_CHAIN_LIST] .': '. $ralRet['msg'],
+                Const_Error::ERROR_QUERY_USER_CHAIN_LIST
             );
             return $arrRet;
         }
