@@ -1,10 +1,5 @@
 <?php
-/**
- * ProcessParams.php
- * 客户端请求参数统一处理插件
- * @author zhuminghai
- * @since 2018/5/31
- */
+
 class Plugin_ProcessParams extends Ap_Plugin_Abstract
 {
 

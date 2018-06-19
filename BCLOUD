@@ -1,1 +1,0 @@
-BUILD_SUBMITTER -x -m baidu/appsearch/xexplorer-server -c "cd baidu/appsearch/xexplorer-server && sh build.sh" -u ./

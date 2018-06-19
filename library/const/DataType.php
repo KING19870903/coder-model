@@ -1,10 +1,5 @@
 <?php
-/**
- * DataType.php
- * 区块链浏览器卡片类型
- * @author zhuminghai
- * @since 2018/6/1
- */
+
 
 class Const_DataType {
 

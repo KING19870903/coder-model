@@ -1,28 +1,22 @@
 <?php
-/**
- * FParam.php
- * f参数信息
- * @author zhuminghai
- * @since 2018/6/1
- */
 
 class Const_FParam {
 
 
     // 首页 --- 我的应用
-    const F_HOME_MYDAPP = 'xexplorer_home_mydapp';
+    const F_HOME_MYDAPP = 'xxx_home_mydapp';
 
     // 首页 --- banner
-    const F_HOME_BANNER = 'xexplorer_home_banner';
+    const F_HOME_BANNER = 'xxx_home_banner';
 
     // 首页 --- 推荐应用
-    const F_HOME_RECOMMEND_DAPP = 'xexplorer_home_recommend_dapp';
+    const F_HOME_RECOMMEND_DAPP = 'xxx_home_recommend_dapp';
 
     // 我的资产 --- 某一区块链
-    const F_MYASSET_ITEM = 'xexplorer_myasset_item';
+    const F_MYASSET_ITEM = 'xxx_myasset_item';
 
     // 我的资产 --- 交易记录
-    const F_MYASSET_TRANSACT_LIST = 'xexplorer_myasset_transact_list';
+    const F_MYASSET_TRANSACT_LIST = 'xxx_myasset_transact_list';
 
 
     public static $fparamMap = array(

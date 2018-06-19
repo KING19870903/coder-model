@@ -83,4 +83,21 @@ class Utils_Util {
 
         As_Request_Output::jsonPackGzip($arrOutput);
     }
+
+    /**
+     * 成功结果输出
+     * @param $data array
+     * @param $msg string
+     * @return array
+     */
+    public static function SuccessArray($data = array(), $msg = '') {
+
+        $result = array(
+            'error_no' => 0,
+            'message' => $msg,
+            'result' => $data,
+        );
+
+        return $result;
+    }
 }

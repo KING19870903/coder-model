@@ -1,9 +1,5 @@
 <?php
-/**
- * @name sampleScript
- * @desc 示例脚本
- * @author zhuminghai(zhuminghai@baidu.com)
- */
+
 Bd_Init::init();
 
 //主体功能逻辑写在这里

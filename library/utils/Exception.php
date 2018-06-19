@@ -1,10 +1,5 @@
 <?php
-/**
- * Exception.php
- * 异常处理类
- * @author zhuminghai
- * @since 2018/6/7
- */
+
 
 class Utils_Exception extends  As_Exception_BaseNew {
 

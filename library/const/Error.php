@@ -1,10 +1,4 @@
 <?php
-/**
- * Error.php
- * 错误码常量定义
- * @author zhuminghai
- * @since 2018/6/7
- */
 
 class Const_Error extends As_Const_Exception{
 

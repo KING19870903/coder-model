@@ -5,7 +5,7 @@ WEBROOT_PATH="/home/work/webroot/xexplorer"
 API_PATH="/home/work/php/phplib/appsearch/api/xexplorer"
 LOG_PATH = "/home/work/log/xexplorer"
 DATA_PATH = "/home/work/data/app/xexplorer"
-DEV_PC="zhuminghai@st01-rdqa-dev076-zhuminghai.epc.baidu.com"
+DEV_PC=""
 APP_SRC_FILE=actions Bootstrap.php controllers library models script test
 
 dev_pc:

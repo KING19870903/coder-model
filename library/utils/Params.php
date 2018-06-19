@@ -1,10 +1,5 @@
 <?php
-/**
- * Params.php
- * 参数统一处理工具类
- * @author zhuminghai
- * @since 2018/5/31
- */
+
 
 class Utils_Params {
 

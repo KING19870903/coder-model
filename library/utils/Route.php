@@ -1,10 +1,5 @@
 <?php
-/**
- * Route.php
- * 区块链浏览器路由管理
- * @author zhuminghai
- * @since 2018/5/31
- */
+
 
 class Utils_Route implements Ap_Route_Interface {
 

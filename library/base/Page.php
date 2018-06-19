@@ -1,10 +1,4 @@
 <?php
-/**
- * Page.php
- * page层基础类
- * @author zhuminghai
- * @since 2018/5/31
- */
 
 class Base_Page extends As_Base_Page {
 
@@ -68,13 +62,18 @@ class Base_Page extends As_Base_Page {
     }
 
     /**
-     * 信息初始化
+     * init
+     * @description : 初始化操作
+     *
+     * @author zhaoxichao
+     * @date 19/06/2018
      */
     public function init() {
 
+        //获取请求参数
         $this->arrInput = Utils_Params::getAllParams();
 
-        // 参数预处理
+        // 参数预处理(参数过滤,参数类型转换,参数默认值设置)
         parent::init();
 
         // 初始化用户信息
@@ -115,6 +114,7 @@ class Base_Page extends As_Base_Page {
             return;
         }
 
+        // 获取用户登录信息
         $ret = Bd_Passport::checkUserLogin($this->arrInput['bduss'], 1, 1, 0, 1, 1);
 
         if($ret) {
